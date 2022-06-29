@@ -17,9 +17,13 @@ type Todo = {
 const Home: NextPage = () => {
   const [text, setText] = useState("");
   const [todos, setTodos] = useState<Todo[]>([]);
-  const containers = ["A", "B", "C", "D"];
-  const [parent, setParent] = useState(null);
-  const draggableMarkup = <Draggable id="draggable">Drag me</Draggable>;
+  // const containers = ["Don't", "Doing", "Did"];
+  // const [parent, setParent] = useState(null);
+  // const draggableMarkup = (
+  //   <Draggable id="draggable" parent="Don't">
+  //     Drag me
+  //   </Draggable>
+  // );
   const handleInput: ChangeEventHandler<HTMLInputElement> = (e) => {
     setText(e.target.value);
   };
@@ -29,13 +33,13 @@ const Home: NextPage = () => {
     });
     setText("");
   };
-  const handleDragEnd = (event: any) => {
-    const { over } = event;
+  // const handleDragEnd = (event: any) => {
+  //   const { over } = event;
 
-    // If the item is dropped over a container, set it as the parent
-    // otherwise reset the parent to `null`
-    setParent(over ? over.id : null);
-  };
+  // If the item is dropped over a container, set it as the parent
+  // otherwise reset the parent to `null`
+  //   setParent(over ? over.id : null);
+  // };
   return (
     <div>
       <Head>
@@ -66,43 +70,50 @@ const Home: NextPage = () => {
             </button>
           </div>
           {/* <DndContext onDragEnd={handleDragEnd}>
-            <Draggable id="draggable">Draggable item</Draggable>
-            <div className="flex justify-between w-[calc(80%-20px)] border-2 border-black rounded-xl p-1">
-              <div className="w-[calc(100%/3-10px)]">
+            <div className="flex justify-between w-[calc(80%-20px)] border-2 border-black rounded-xl py-1 px-[9px]">
+              <div className="w-[calc(100%/3-6px)]">
                 <h3 className="text-xl font-bold text-center">Don't</h3>
-                <Droppable id="dont"> */}
-          {/* {todos?.map((item) => {
-                    return (
-                      <Draggable key={item.id} id={item.id}>
-                        {item.label}
-                      </Draggable>
-                    );
-                  })} */}
-          {/* </Droppable>
+                <Droppable key="Don't" item="Don't">
+                  {parent === "Don't" ? draggableMarkup : "Drop here"}
+                </Droppable>
               </div>
-              <div className="w-[calc(100%/3-10px)]">
+              <div className="w-[calc(100%/3-6px)]">
                 <h3 className="text-xl font-bold text-center">Doing</h3>
-                <Droppable id="doing"></Droppable>
+                <Droppable key="Doing" item="Doing">
+                  {parent === "Doing" ? draggableMarkup : "Drop here"}
+                </Droppable>
               </div>
-              <div className="w-[calc(100%/3-10px)]">
+              <div className="w-[calc(100%/3-6px)]">
                 <h3 className="text-xl font-bold text-center">Did</h3>
-                <Droppable id="did"></Droppable>
+                <Droppable key="Did" item="Did">
+                  {parent === "Did" ? draggableMarkup : "Drop here"}
+                </Droppable>
               </div>
             </div>
           </DndContext> */}
-          <DndContext onDragEnd={handleDragEnd}>
-            {parent === null ? draggableMarkup : null}
-
-            <div className="max-w-3xl flex justify-between mx-auto flex-wrap">
-              {containers.map((id) => (
-                // We updated the Droppable component so it would accept an `id`
-                // prop and pass it to `useDroppable`
-                <Droppable key={id} id={id}>
-                  {parent === id ? draggableMarkup : "Drop here"}
-                </Droppable>
-              ))}
+          <div className="flex justify-between w-[calc(80%-20px)] border-2 border-black rounded-xl py-1 px-[9px]">
+            <div className="w-[calc(100%/3-6px)]">
+              <h3 className="text-xl font-bold text-center">Don't</h3>
+              <div className="w-full rounded-md bg-gray-200 p-2">
+                {todos.map((todo) => {
+                  return (
+                    <button
+                      key={todo.id}
+                      className="w-full font-bold text-md first:mt-0 mt-3 rounded-md shadow-sm shadow-black bg-white p-2"
+                    >
+                      {todo.label}
+                    </button>
+                  );
+                })}
+              </div>
             </div>
-          </DndContext>
+            <div className="w-[calc(100%/3-6px)]">
+              <h3 className="text-xl font-bold text-center">Doing</h3>
+            </div>
+            <div className="w-[calc(100%/3-6px)]">
+              <h3 className="text-xl font-bold text-center">Did</h3>
+            </div>
+          </div>
         </div>
       </main>
     </div>
