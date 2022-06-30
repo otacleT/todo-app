@@ -1,5 +1,5 @@
 import { FC } from "react";
-import Draggable from "./Draggable";
+import { Draggable } from "./Draggable";
 
 type Props = {
   id: string;

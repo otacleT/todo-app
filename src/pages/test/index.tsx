@@ -12,12 +12,14 @@ type Todo = {
 };
 
 const Test = () => {
-  const containers = ["A", "B", "C"];
+  const containers = ["Don't", "Doing", "Did"];
   const [text, setText] = useState("");
   const [todos, setTodos] = useState<Todo>();
   // const [todos, setTodos] = useState<Todo[]>([]);
   const [parent, setParent] = useState(null);
-  const draggableMarkup = <Draggable id="draggable" label={todos?.label} />;
+  const draggableMarkup = (
+    <Draggable list={containers} id="draggable" label={todos?.label} />
+  );
 
   const handleInput: ChangeEventHandler<HTMLInputElement> = (e) => {
     setText(e.target.value);
@@ -61,11 +63,9 @@ const Test = () => {
             </div>
             <div className="w-[calc(80%-10px)] flex justify-between items-start flex-wrap max-w-6xl mx-auto px-3 mt-10">
               <div className="w-full">
-                {parent === null ? draggableMarkup : null}
+                {todos ? (parent === null ? draggableMarkup : null) : null}
               </div>
               {containers.map((id) => (
-                // We updated the Droppable component so it would accept an `id`
-                // prop and pass it to `useDroppable`
                 <Droppable key={id} id={id}>
                   {parent === id ? draggableMarkup : "Drop here"}
                 </Droppable>
