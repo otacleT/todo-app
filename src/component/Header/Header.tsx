@@ -2,7 +2,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { AiFillGithub, AiFillTwitterCircle } from "react-icons/ai";
 
-const Header = () => {
+/**@package */
+export const Header = () => {
   return (
     <header className="w-full shadow-md shadow-black/25">
       <div className="h-[70px] max-w-3xl px-3 mx-auto  flex justify-between items-center">
@@ -47,5 +48,3 @@ const Header = () => {
     </header>
   );
 };
-
-export default Header;

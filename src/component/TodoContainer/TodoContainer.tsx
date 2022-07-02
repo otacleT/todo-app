@@ -12,19 +12,19 @@ import {
   UniqueIdentifier,
 } from "@dnd-kit/core";
 import { arrayMove, sortableKeyboardCoordinates } from "@dnd-kit/sortable";
-import Container from "src/component/Container";
-import Addtodo from "./Addtodo";
-import Dragitem from "./Dragitem";
+import { TodoList } from "../TodoList";
+import { AddTodo } from "../Addtodo";
+import { TodoBlock } from "../TodoBlock";
 
 type Props = {
   [key: string]: string[];
 };
 
-const Todo = () => {
+export const TodoContainer = () => {
   const [items, setItems] = useState<Props>({
-    container1: [],
-    container2: [],
-    container3: [],
+    dont: [],
+    doing: [],
+    did: [],
   });
   const [activeId, setActiveId] = useState<UniqueIdentifier | null>();
 
@@ -38,7 +38,7 @@ const Todo = () => {
 
   return (
     <div className="flex justify-between max-w-6xl mx-auto px-3 mt-10">
-      <Addtodo setItems={setItems} />
+      <AddTodo setItems={setItems} />
       <div className="flex justify-between w-[calc(80%-20px)] border-2 border-black rounded-xl py-1 px-[9px]">
         <DndContext
           sensors={sensors}
@@ -47,11 +47,11 @@ const Todo = () => {
           onDragOver={handleDragOver}
           onDragEnd={handleDragEnd}
         >
-          <Container label="Don't" id="container1" items={items.container1} />
-          <Container label="Doing" id="container2" items={items.container2} />
-          <Container label="Did" id="container3" items={items.container3} />
+          <TodoList label="Don't" id="dont" items={items.dont} />
+          <TodoList label="Doing" id="doing" items={items.doing} />
+          <TodoList label="Did" id="did" items={items.did} />
           <DragOverlay>
-            {activeId ? <Dragitem id={activeId} /> : null}
+            {activeId ? <TodoBlock id={activeId} /> : null}
           </DragOverlay>
         </DndContext>
       </div>
@@ -96,7 +96,7 @@ const Todo = () => {
       const overItems = prev[overContainer];
 
       // Find the indexes for the items
-      const activeIndex = activeItems.indexOf(active.id);
+      const activeIndex = activeItems.indexOf(id);
       const overIndex = overItems.indexOf(overId);
 
       let newIndex;
@@ -158,4 +158,3 @@ const Todo = () => {
     setActiveId(null);
   }
 };
-export default Todo;

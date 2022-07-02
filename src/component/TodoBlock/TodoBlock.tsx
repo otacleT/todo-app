@@ -4,7 +4,9 @@ import { FC } from "react";
 type Props = {
   id: UniqueIdentifier;
 };
-const Dragitem: FC<Props> = (props) => {
+
+/**@package */
+export const TodoBlock: FC<Props> = (props) => {
   const { id } = props;
 
   return (
@@ -13,5 +15,3 @@ const Dragitem: FC<Props> = (props) => {
     </button>
   );
 };
-
-export default Dragitem;

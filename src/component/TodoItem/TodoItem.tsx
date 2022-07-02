@@ -1,13 +1,14 @@
 import React, { FC } from "react";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import Dragitem from "./Dragitem";
+import { TodoBlock } from "../TodoBlock";
 
 type Props = {
   id: string;
 };
 
-const SortableItem: FC<Props> = (props) => {
+/**@package */
+export const TodoItem: FC<Props> = (props) => {
   const { attributes, listeners, setNodeRef, transform, transition } =
     useSortable({ id: props.id });
 
@@ -17,10 +18,14 @@ const SortableItem: FC<Props> = (props) => {
   };
 
   return (
-    <div ref={setNodeRef} style={style} {...attributes} {...listeners}>
-      <Dragitem id={props.id} />
+    <div
+      className="mt-3 first:mt-0"
+      ref={setNodeRef}
+      style={style}
+      {...attributes}
+      {...listeners}
+    >
+      <TodoBlock id={props.id} />
     </div>
   );
 };
-
-export default SortableItem;

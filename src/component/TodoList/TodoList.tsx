@@ -4,7 +4,7 @@ import {
   SortableContext,
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
-import SortableItem from "./SortableItem";
+import { TodoItem } from "../TodoItem";
 
 type Props = {
   id: string;
@@ -12,7 +12,8 @@ type Props = {
   items: string[];
 };
 
-const Container: FC<Props> = (props) => {
+/**@package */
+export const TodoList: FC<Props> = (props) => {
   const { id, items } = props;
 
   const { setNodeRef } = useDroppable({
@@ -32,12 +33,10 @@ const Container: FC<Props> = (props) => {
           className="w-full border-2 border-gray-500/75 p-5 mt-2 rounded-md"
         >
           {items.map((id) => (
-            <SortableItem key={id} id={id} />
+            <TodoItem key={id} id={id} />
           ))}
         </div>
       </SortableContext>
     </div>
   );
 };
-
-export default Container;
