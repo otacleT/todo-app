@@ -10,11 +10,12 @@ type Props = {
   id: string;
   label: string;
   items: string[];
+  date: string;
 };
 
 /**@package */
 export const TodoList: FC<Props> = (props) => {
-  const { id, items } = props;
+  const { id, items, date } = props;
 
   const { setNodeRef } = useDroppable({
     id,
@@ -33,7 +34,7 @@ export const TodoList: FC<Props> = (props) => {
           className="w-full border-2 border-gray-500/75 p-5 mt-2 rounded-md"
         >
           {items.map((id) => (
-            <TodoItem key={id} id={id} />
+            <TodoItem date={date} key={id} id={id} />
           ))}
         </div>
       </SortableContext>

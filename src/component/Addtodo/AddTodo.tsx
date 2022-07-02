@@ -1,13 +1,22 @@
+import { Moment } from "moment";
 import { ChangeEventHandler, FC, useState } from "react";
+import { SingleDatePicker } from "react-dates";
+import "react-dates/lib/css/_datepicker.css";
+import { MdOutlineCalendarToday } from "react-icons/md";
 
 type Props = {
   [key: string]: string[];
 };
 
-/**@package */
-export const AddTodo: FC<{
+type TodoInput = {
+  date: any;
   setItems: React.Dispatch<React.SetStateAction<Props>>;
-}> = ({ setItems }) => {
+  setDate: React.Dispatch<React.SetStateAction<Props>>;
+};
+
+/**@package */
+export const AddTodo: FC<TodoInput> = (props) => {
+  const { date, setItems, setDate } = props;
   const handleAdd = () => {
     setItems((prevItems) => {
       const { dont } = prevItems;
@@ -16,18 +25,37 @@ export const AddTodo: FC<{
     setText("");
   };
   const [text, setText] = useState("");
+  const [focused, setFocused] = useState<boolean>(false);
   const handleInput: ChangeEventHandler<HTMLInputElement> = (e) => {
     setText(e.target.value);
   };
   return (
     <div className="w-[20%]">
-      <h3 className="text-xl font-bold text-center">Add List</h3>
+      <h3 className="text-xl font-bold text-center">Todoリストを追加</h3>
       <input
-        className="w-full border border-black p-2 mt-3 rounded-sm"
+        className="w-full border-2 border-gray-500/75  p-2 mt-3 rounded-sm"
         value={text}
         onChange={handleInput}
         type="text"
+        placeholder="勉強する"
       />
+      <div className="flex justify-between items-center mt-2">
+        <h4 className="text-sm font-bold flex items-center">
+          <MdOutlineCalendarToday className="text-xl mr-3" />
+          期限
+        </h4>
+        <SingleDatePicker
+          date={date}
+          onDateChange={(date) => setDate(date)}
+          focused={focused}
+          onFocusChange={({ focused }) => setFocused(focused)}
+          id="date"
+          displayFormat="YYYY-MM-DD"
+          onClose={(focused) => setFocused(false)}
+          disableScroll={true}
+          numberOfMonths={1}
+        />
+      </div>
       <button
         onClick={handleAdd}
         className="w-full mt-5 h-10 flex items-center justify-center text-md font-bold rounded-sm text-white bg-black"
