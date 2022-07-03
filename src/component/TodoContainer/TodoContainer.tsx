@@ -15,18 +15,24 @@ import { arrayMove, sortableKeyboardCoordinates } from "@dnd-kit/sortable";
 import { TodoList } from "../TodoList";
 import { AddTodo } from "../Addtodo";
 import { TodoBlock } from "../TodoBlock";
+import moment from "moment";
 
 type Props = {
   [key: string]: string[];
 };
 
 export const TodoContainer = () => {
+  const [activeId, setActiveId] = useState<UniqueIdentifier | null>();
+  const [date, setDate] = useState<any>(moment);
   const [items, setItems] = useState<Props>({
-    dont: [],
+    dont: [
+      {
+        date: "2022-07-03",
+      },
+    ],
     doing: [],
     did: [],
   });
-  const [activeId, setActiveId] = useState<UniqueIdentifier | null>();
 
   //   入力方法の定義
   const sensors = useSensors(
@@ -47,7 +53,7 @@ export const TodoContainer = () => {
           onDragOver={handleDragOver}
           onDragEnd={handleDragEnd}
         >
-          <TodoList label="Don't" id="dont" items={items.dont} />
+          <TodoList date={date} label="Don't" id="dont" items={items.dont} />
           <TodoList label="Doing" id="doing" items={items.doing} />
           <TodoList label="Did" id="did" items={items.did} />
           <DragOverlay>
