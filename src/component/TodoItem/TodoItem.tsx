@@ -5,12 +5,11 @@ import { TodoBlock } from "../TodoBlock";
 
 type Props = {
   id: string;
-  date: string;
 };
 
 /**@package */
 export const TodoItem: FC<Props> = (props) => {
-  const { id, date } = props;
+  const { id } = props;
   const { attributes, listeners, setNodeRef, transform, transition } =
     useSortable({ id: props.id });
 
@@ -27,7 +26,7 @@ export const TodoItem: FC<Props> = (props) => {
       {...attributes}
       {...listeners}
     >
-      <TodoBlock id={id} date={date} />
+      <TodoBlock id={id} />
     </div>
   );
 };

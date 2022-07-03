@@ -15,14 +15,12 @@ import { arrayMove, sortableKeyboardCoordinates } from "@dnd-kit/sortable";
 import { TodoList } from "../TodoList";
 import { AddTodo } from "../Addtodo";
 import { TodoBlock } from "../TodoBlock";
-import moment from "moment";
 
 type Props = {
   [key: string]: string[];
 };
 
 export const TodoContainer = () => {
-  const [date, setDate] = useState<any>(moment);
   const [items, setItems] = useState<Props>({
     dont: [],
     doing: [],
@@ -40,7 +38,7 @@ export const TodoContainer = () => {
 
   return (
     <div className="flex justify-between max-w-6xl mx-auto px-3 mt-10">
-      <AddTodo date={date} setItems={setItems} setDate={setDate} />
+      <AddTodo setItems={setItems} />
       <div className="flex justify-between w-[calc(80%-20px)] border-2 border-black rounded-xl py-1 px-[9px]">
         <DndContext
           sensors={sensors}
@@ -49,13 +47,11 @@ export const TodoContainer = () => {
           onDragOver={handleDragOver}
           onDragEnd={handleDragEnd}
         >
-          <TodoList date={date} label="Don't" id="dont" items={items.dont} />
-          <TodoList date={date} label="Doing" id="doing" items={items.doing} />
-          <TodoList date={date} label="Did" id="did" items={items.did} />
+          <TodoList label="Don't" id="dont" items={items.dont} />
+          <TodoList label="Doing" id="doing" items={items.doing} />
+          <TodoList label="Did" id="did" items={items.did} />
           <DragOverlay>
-            {activeId ? (
-              <TodoBlock date={date.toString()} id={activeId} />
-            ) : null}
+            {activeId ? <TodoBlock id={activeId} /> : null}
           </DragOverlay>
         </DndContext>
       </div>

@@ -1,4 +1,4 @@
-import { Moment } from "moment";
+import moment from "moment";
 import { ChangeEventHandler, FC, useState } from "react";
 import { SingleDatePicker } from "react-dates";
 import "react-dates/lib/css/_datepicker.css";
@@ -9,14 +9,12 @@ type Props = {
 };
 
 type TodoInput = {
-  date: any;
   setItems: React.Dispatch<React.SetStateAction<Props>>;
-  setDate: React.Dispatch<React.SetStateAction<Props>>;
 };
 
 /**@package */
 export const AddTodo: FC<TodoInput> = (props) => {
-  const { date, setItems, setDate } = props;
+  const { setItems } = props;
   const handleAdd = () => {
     setItems((prevItems) => {
       const { dont } = prevItems;
@@ -25,6 +23,7 @@ export const AddTodo: FC<TodoInput> = (props) => {
     setText("");
   };
   const [text, setText] = useState("");
+  const [date, setDate] = useState<any>(moment);
   const [focused, setFocused] = useState<boolean>(false);
   const handleInput: ChangeEventHandler<HTMLInputElement> = (e) => {
     setText(e.target.value);
