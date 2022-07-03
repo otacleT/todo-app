@@ -14,7 +14,7 @@ type Props = {
 
 /**@package */
 export const TodoList: FC<Props> = (props) => {
-  const { id, items } = props;
+  const { id, label, items } = props;
 
   const { setNodeRef } = useDroppable({
     id,
@@ -22,7 +22,7 @@ export const TodoList: FC<Props> = (props) => {
 
   return (
     <div className="w-[calc(33%-5px)]">
-      <h3 className="text-xl font-bold text-center">{props.label}</h3>
+      <h3 className="text-xl font-bold text-center">{label}</h3>
       <SortableContext
         id={id}
         items={items}

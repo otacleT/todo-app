@@ -3,19 +3,18 @@ import {
   DndContext,
   DragOverlay,
   closestCorners,
-  KeyboardSensor,
-  PointerSensor,
-  useSensor,
-  useSensors,
   DragOverEvent,
   DragStartEvent,
   UniqueIdentifier,
+  useSensors,
+  useSensor,
+  PointerSensor,
+  KeyboardSensor,
 } from "@dnd-kit/core";
 import { arrayMove, sortableKeyboardCoordinates } from "@dnd-kit/sortable";
 import { TodoList } from "../TodoList";
 import { AddTodo } from "../Addtodo";
 import { TodoBlock } from "../TodoBlock";
-import moment from "moment";
 
 type Props = {
   [key: string]: string[];
@@ -23,25 +22,17 @@ type Props = {
 
 export const TodoContainer = () => {
   const [activeId, setActiveId] = useState<UniqueIdentifier | null>();
-  const [date, setDate] = useState<any>(moment);
   const [items, setItems] = useState<Props>({
-    dont: [
-      {
-        date: "2022-07-03",
-      },
-    ],
+    dont: [],
     doing: [],
     did: [],
   });
-
-  //   入力方法の定義
   const sensors = useSensors(
     useSensor(PointerSensor),
     useSensor(KeyboardSensor, {
       coordinateGetter: sortableKeyboardCoordinates,
     })
   );
-
   return (
     <div className="flex justify-between max-w-6xl mx-auto px-3 mt-10">
       <AddTodo setItems={setItems} />
@@ -53,7 +44,7 @@ export const TodoContainer = () => {
           onDragOver={handleDragOver}
           onDragEnd={handleDragEnd}
         >
-          <TodoList date={date} label="Don't" id="dont" items={items.dont} />
+          <TodoList label="Don't" id="dont" items={items.dont} />
           <TodoList label="Doing" id="doing" items={items.doing} />
           <TodoList label="Did" id="did" items={items.did} />
           <DragOverlay>

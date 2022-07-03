@@ -1,8 +1,6 @@
-import moment from "moment";
 import { ChangeEventHandler, FC, useState } from "react";
-import { SingleDatePicker } from "react-dates";
-import "react-dates/lib/css/_datepicker.css";
 import { MdOutlineCalendarToday } from "react-icons/md";
+import { AddSchejule } from "../Addschejule";
 
 type Props = {
   [key: string]: string[];
@@ -15,6 +13,13 @@ type TodoInput = {
 /**@package */
 export const AddTodo: FC<TodoInput> = (props) => {
   const { setItems } = props;
+  const [text, setText] = useState("");
+  // const [date, setDate] = useState(dayjs());
+  // const [focused, setFocused] = useState<boolean>(false);
+
+  const handleInput: ChangeEventHandler<HTMLInputElement> = (e) => {
+    setText(e.target.value);
+  };
   const handleAdd = () => {
     setItems((prevItems) => {
       const { dont } = prevItems;
@@ -22,12 +27,7 @@ export const AddTodo: FC<TodoInput> = (props) => {
     });
     setText("");
   };
-  const [text, setText] = useState("");
-  const [date, setDate] = useState<any>(moment);
-  const [focused, setFocused] = useState<boolean>(false);
-  const handleInput: ChangeEventHandler<HTMLInputElement> = (e) => {
-    setText(e.target.value);
-  };
+
   return (
     <div className="w-[20%]">
       <h3 className="text-xl font-bold text-center">Todoリストを追加</h3>
@@ -43,7 +43,7 @@ export const AddTodo: FC<TodoInput> = (props) => {
           <MdOutlineCalendarToday className="text-xl mr-3" />
           期限
         </h4>
-        <SingleDatePicker
+        {/* <SingleDatePicker
           date={date}
           onDateChange={(date) => setDate(date)}
           focused={focused}
@@ -53,7 +53,8 @@ export const AddTodo: FC<TodoInput> = (props) => {
           onClose={(focused) => setFocused(false)}
           disableScroll={true}
           numberOfMonths={1}
-        />
+        /> */}
+        <AddSchejule />
       </div>
       <button
         onClick={handleAdd}
