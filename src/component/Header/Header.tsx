@@ -21,7 +21,7 @@ export const Header = () => {
           </Link>
         </h1>
         <nav>
-          <ul className="flex justify-between">
+          <ul className="flex justify-between items-center">
             <li className="px-3">
               <a
                 href="https://github.com/MIYABETaisei"

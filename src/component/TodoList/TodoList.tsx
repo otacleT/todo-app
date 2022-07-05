@@ -9,7 +9,7 @@ import { TodoItem } from "../TodoItem";
 type Props = {
   id: string;
   label: string;
-  items: string[];
+  items: { title: string; date: Date }[];
 };
 
 /**@package */
@@ -33,7 +33,7 @@ export const TodoList: FC<Props> = (props) => {
           className="w-full border-2 border-gray-500/75 p-5 mt-2 rounded-md"
         >
           {items.map((id) => (
-            <TodoItem key={id} id={id} />
+            <TodoItem key={id.title} id={id.title} />
           ))}
         </div>
       </SortableContext>

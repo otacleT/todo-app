@@ -17,13 +17,13 @@ import { AddTodo } from "../Addtodo";
 import { TodoBlock } from "../TodoBlock";
 
 type Props = {
-  [key: string]: string[];
+  [key: string]: { title: string; date: Date }[];
 };
 
 export const TodoContainer = () => {
   const [activeId, setActiveId] = useState<UniqueIdentifier | null>();
   const [items, setItems] = useState<Props>({
-    dont: [],
+    dont: [{ title: "title", date: new Date() }],
     doing: [],
     did: [],
   });
