@@ -1,9 +1,9 @@
-import dayjs from "dayjs";
+import { UniqueIdentifier } from "@dnd-kit/core";
 import { ChangeEventHandler, FC, useState } from "react";
 import { AddSchejule } from "../Addschejule";
 
 type Props = {
-  [key: string]: { title: string; date: Date }[];
+  [key: string]: { id: UniqueIdentifier; title: string; date: Date }[];
 };
 
 type TodoInput = {
@@ -22,7 +22,10 @@ export const AddTodo: FC<TodoInput> = (props) => {
   const handleAdd = () => {
     setItems((prevItems) => {
       const { dont } = prevItems;
-      return { ...prevItems, dont: [...dont, { title: text, date: date }] };
+      return {
+        ...prevItems,
+        dont: [...dont, { id: Math.random(), title: text, date: date }],
+      };
     });
     setText("");
   };

@@ -1,17 +1,17 @@
 import { UniqueIdentifier } from "@dnd-kit/core";
+import dayjs from "dayjs";
 import { FC } from "react";
 
 type Props = {
-  id: UniqueIdentifier;
+  item?: { id: UniqueIdentifier; title: string; date: Date };
 };
 
 /**@package */
 export const TodoBlock: FC<Props> = (props) => {
-  const { id } = props;
-
   return (
     <button className="text-md font-bold block border-2 border-gray-300 shadow-lg shadow-black/30 w-full p-2 rounded-md">
-      {id}
+      {props.item?.title}
+      <span>{dayjs(props.item?.date).format("YYYY-MM-DD")}</span>
     </button>
   );
 };

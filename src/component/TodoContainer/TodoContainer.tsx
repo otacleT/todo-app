@@ -17,13 +17,13 @@ import { AddTodo } from "../Addtodo";
 import { TodoBlock } from "../TodoBlock";
 
 type Props = {
-  [key: string]: { title: string; date: Date }[];
+  [key: string]: { id: UniqueIdentifier; title: string; date: Date }[];
 };
 
 export const TodoContainer = () => {
   const [activeId, setActiveId] = useState<UniqueIdentifier | null>();
   const [items, setItems] = useState<Props>({
-    dont: [{ title: "title", date: new Date() }],
+    dont: [{ id: Math.random(), title: "title", date: new Date() }],
     doing: [],
     did: [],
   });
@@ -44,11 +44,11 @@ export const TodoContainer = () => {
           onDragOver={handleDragOver}
           onDragEnd={handleDragEnd}
         >
-          <TodoList label="Don't" id="dont" items={items.dont} />
-          <TodoList label="Doing" id="doing" items={items.doing} />
-          <TodoList label="Did" id="did" items={items.did} />
+          <TodoList label="Don't" id="dont" list={items.dont} />
+          <TodoList label="Doing" id="doing" list={items.doing} />
+          <TodoList label="Did" id="did" list={items.did} />
           <DragOverlay>
-            {activeId ? <TodoBlock id={activeId} /> : null}
+            {activeId ? <TodoBlock item={activeId} /> : null}
           </DragOverlay>
         </DndContext>
       </div>
@@ -64,10 +64,7 @@ export const TodoContainer = () => {
   }
   //   掴んだ要素をアクティブにする
   function handleDragStart(event: DragStartEvent) {
-    const { active } = event;
-    const { id } = active;
-
-    setActiveId(id);
+    setActiveId(event.active.id);
   }
 
   function handleDragOver(event: DragOverEvent) {
@@ -111,7 +108,7 @@ export const TodoContainer = () => {
       return {
         ...prev,
         [activeContainer]: [
-          ...prev[activeContainer].filter((item) => item !== active.id),
+          ...prev[activeContainer].filter((item) => item.title !== active.id),
         ],
         [overContainer]: [
           ...prev[overContainer].slice(0, newIndex),

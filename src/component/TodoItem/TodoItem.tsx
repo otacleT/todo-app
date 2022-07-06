@@ -2,16 +2,17 @@ import React, { FC } from "react";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { TodoBlock } from "../TodoBlock";
+import { UniqueIdentifier } from "@dnd-kit/core";
 
 type Props = {
-  id: string;
+  item: { id: UniqueIdentifier; title: string; date: Date };
 };
 
 /**@package */
 export const TodoItem: FC<Props> = (props) => {
-  const { id } = props;
+  const { item } = props;
   const { attributes, listeners, setNodeRef, transform, transition } =
-    useSortable({ id: props.id });
+    useSortable({ id: item.id });
 
   const style = {
     transform: CSS.Transform.toString(transform),
@@ -26,7 +27,7 @@ export const TodoItem: FC<Props> = (props) => {
       {...attributes}
       {...listeners}
     >
-      <TodoBlock id={id} />
+      <TodoBlock item={item} />
     </div>
   );
 };
