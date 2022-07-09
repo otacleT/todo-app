@@ -1,9 +1,8 @@
 import { UniqueIdentifier } from "@dnd-kit/core";
 import { ChangeEventHandler, FC, useState } from "react";
-import { AddSchejule } from "../Addschejule";
 
 type Props = {
-  [key: string]: { id: UniqueIdentifier; title: string; date: Date }[];
+  [key: string]: UniqueIdentifier[];
 };
 
 type TodoInput = {
@@ -14,17 +13,16 @@ type TodoInput = {
 export const AddTodo: FC<TodoInput> = (props) => {
   const { setItems } = props;
   const [text, setText] = useState<string>("");
-  const [date, setDate] = useState(new Date());
 
   const handleInput: ChangeEventHandler<HTMLInputElement> = (e) => {
     setText(e.target.value);
   };
   const handleAdd = () => {
     setItems((prevItems) => {
-      const { dont } = prevItems;
+      const { todo } = prevItems;
       return {
         ...prevItems,
-        dont: [...dont, { id: Math.random(), title: text, date: date }],
+        todo: [...todo, text],
       };
     });
     setText("");
@@ -40,9 +38,9 @@ export const AddTodo: FC<TodoInput> = (props) => {
         type="text"
         placeholder="勉強する"
       />
-      <div className="flex justify-between items-center mt-2">
+      {/* <div className="flex justify-between items-center mt-2">
         <AddSchejule setDate={setDate} />
-      </div>
+      </div> */}
       <button
         onClick={handleAdd}
         className="w-full mt-5 h-10 flex items-center justify-center text-md font-bold rounded-sm text-white bg-black"
