@@ -10,6 +10,7 @@ import {
   useSensor,
   PointerSensor,
   KeyboardSensor,
+  DragEndEvent,
 } from "@dnd-kit/core";
 import { arrayMove, sortableKeyboardCoordinates } from "@dnd-kit/sortable";
 import { TodoList } from "../TodoList";
@@ -17,15 +18,15 @@ import { AddTodo } from "../Addtodo";
 import { TodoBlock } from "../TodoBlock";
 
 type Props = {
-  [key: string]: { id: UniqueIdentifier; title: string; date: Date }[];
+  [key: string]: UniqueIdentifier[];
 };
 
 export const TodoContainer = () => {
   const [activeId, setActiveId] = useState<UniqueIdentifier | null>();
   const [items, setItems] = useState<Props>({
-    dont: [{ id: Math.random(), title: "title", date: new Date() }],
+    todo: [],
     doing: [],
-    did: [],
+    done: [],
   });
   const sensors = useSensors(
     useSensor(PointerSensor),
@@ -44,38 +45,45 @@ export const TodoContainer = () => {
           onDragOver={handleDragOver}
           onDragEnd={handleDragEnd}
         >
-          <TodoList label="Don't" id="dont" list={items.dont} />
-          <TodoList label="Doing" id="doing" list={items.doing} />
-          <TodoList label="Did" id="did" list={items.did} />
+          <TodoList label="Todo" id="todo" items={items.todo} />
+          <TodoList label="Doing" id="doing" items={items.doing} />
+          <TodoList label="Done" id="done" items={items.done} />
           <DragOverlay>
-            {activeId ? <TodoBlock item={activeId} /> : null}
+            {activeId ? <TodoBlock title={activeId} /> : null}
           </DragOverlay>
         </DndContext>
       </div>
     </div>
   );
 
-  function findContainer<T>(id: T) {
+  function findContainer(id: UniqueIdentifier) {
     if (id in items) {
       return id;
     }
+    // console.log(Object.keys(items));
+    // console.log(Object.keys(items).find((key) => items[key].includes(id)));
 
     return Object.keys(items).find((key) => items[key].includes(id));
   }
-  //   掴んだ要素をアクティブにする
+
   function handleDragStart(event: DragStartEvent) {
-    setActiveId(event.active.id);
+    const { active } = event;
+    const { id } = active;
+
+    setActiveId(id);
   }
 
   function handleDragOver(event: DragOverEvent) {
-    // const { active, over, draggingRect } = event;
     const { active, over } = event;
     const { id } = active;
+    if (!over) {
+      return;
+    }
     const { id: overId } = over;
 
     // Find the containers
-    const activeContainer = findContainer<UniqueIdentifier>(id);
-    const overContainer = findContainer<any>(overId);
+    const activeContainer = findContainer(id);
+    const overContainer = findContainer(overId);
 
     if (
       !activeContainer ||
@@ -108,7 +116,7 @@ export const TodoContainer = () => {
       return {
         ...prev,
         [activeContainer]: [
-          ...prev[activeContainer].filter((item) => item.title !== active.id),
+          ...prev[activeContainer].filter((item) => item !== active.id),
         ],
         [overContainer]: [
           ...prev[overContainer].slice(0, newIndex),
@@ -119,9 +127,12 @@ export const TodoContainer = () => {
     });
   }
 
-  function handleDragEnd(event: DragOverEvent) {
+  function handleDragEnd(event: DragEndEvent) {
     const { active, over } = event;
-    const id: any = active;
+    const { id } = active;
+    if (!over) {
+      return;
+    }
     const { id: overId } = over;
 
     const activeContainer = findContainer(id);
@@ -135,8 +146,10 @@ export const TodoContainer = () => {
       return;
     }
 
-    const activeIndex = items[activeContainer].indexOf(id);
+    const activeIndex = items[activeContainer].indexOf(active.id);
     const overIndex = items[overContainer].indexOf(overId);
+    console.log(activeIndex);
+    console.log(overIndex);
 
     if (activeIndex !== overIndex) {
       setItems((items) => ({
