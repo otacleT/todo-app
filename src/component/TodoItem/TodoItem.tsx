@@ -5,14 +5,14 @@ import { TodoBlock } from "../TodoBlock";
 import { UniqueIdentifier } from "@dnd-kit/core";
 
 type Props = {
-  item: { id: UniqueIdentifier; title: string; date: Date };
+  id: UniqueIdentifier;
 };
 
 /**@package */
 export const TodoItem: FC<Props> = (props) => {
-  const { item } = props;
+  const { id } = props;
   const { attributes, listeners, setNodeRef, transform, transition } =
-    useSortable({ id: item.id });
+    useSortable({ id: id });
 
   const style = {
     transform: CSS.Transform.toString(transform),
@@ -27,7 +27,7 @@ export const TodoItem: FC<Props> = (props) => {
       {...attributes}
       {...listeners}
     >
-      <TodoBlock item={item} />
+      <TodoBlock title={id} />
     </div>
   );
 };
