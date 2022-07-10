@@ -15,9 +15,9 @@ const Home: NextPage = () => {
       <Header />
       <main>
         <h2 className="text-3xl font-bold text-center mt-5">Todo App</h2>
-        {/* <Link href="/test">
+        <Link href="/test">
           <a>Test page</a>
-        </Link> */}
+        </Link>
         <TodoContainer />
       </main>
     </div>
