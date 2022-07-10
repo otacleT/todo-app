@@ -6,13 +6,14 @@ import { UniqueIdentifier } from "@dnd-kit/core";
 
 type Props = {
   id: UniqueIdentifier;
+  title?: string;
+  date?: Date | undefined;
 };
 
 /**@package */
 export const TodoItem: FC<Props> = (props) => {
-  const { id } = props;
   const { attributes, listeners, setNodeRef, transform, transition } =
-    useSortable({ id: id });
+    useSortable({ id: props.id });
 
   const style = {
     transform: CSS.Transform.toString(transform),
@@ -27,7 +28,7 @@ export const TodoItem: FC<Props> = (props) => {
       {...attributes}
       {...listeners}
     >
-      <TodoBlock title={id} />
+      <TodoBlock title={props.title} date={props.date} />
     </div>
   );
 };

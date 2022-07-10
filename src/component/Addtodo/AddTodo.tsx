@@ -1,8 +1,13 @@
 import { UniqueIdentifier } from "@dnd-kit/core";
 import { ChangeEventHandler, FC, useState } from "react";
+import { AddSchejule } from "../Addschejule";
 
 type Props = {
-  [key: string]: UniqueIdentifier[];
+  [key: string]: {
+    id: UniqueIdentifier;
+    title: string;
+    date: Date | undefined;
+  }[];
 };
 
 type TodoInput = {
@@ -13,6 +18,7 @@ type TodoInput = {
 export const AddTodo: FC<TodoInput> = (props) => {
   const { setItems } = props;
   const [text, setText] = useState<string>("");
+  const [date, setDate] = useState<Date | undefined>();
 
   const handleInput: ChangeEventHandler<HTMLInputElement> = (e) => {
     setText(e.target.value);
@@ -22,10 +28,18 @@ export const AddTodo: FC<TodoInput> = (props) => {
       const { todo } = prevItems;
       return {
         ...prevItems,
-        todo: [...todo, text],
+        todo: [
+          ...todo,
+          {
+            id: Math.round(Math.random() * 100000),
+            title: text,
+            date: date,
+          },
+        ],
       };
     });
     setText("");
+    setDate(undefined);
   };
 
   return (
@@ -38,9 +52,9 @@ export const AddTodo: FC<TodoInput> = (props) => {
         type="text"
         placeholder="勉強する"
       />
-      {/* <div className="flex justify-between items-center mt-2">
+      <div className="flex justify-between items-center mt-2">
         <AddSchejule setDate={setDate} />
-      </div> */}
+      </div>
       <button
         onClick={handleAdd}
         className="w-full mt-5 h-10 flex items-center justify-center text-md font-bold rounded-sm text-white bg-black"

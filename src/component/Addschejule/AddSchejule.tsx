@@ -1,18 +1,13 @@
 import { DatePicker } from "@mantine/dates";
-import dayjs from "dayjs";
-import { ChangeEventHandler } from "react";
 import { BsCalendar } from "react-icons/bs";
-
-type Props = { date: Date };
 
 /**@package */
 export const AddSchejule = ({
   setDate,
 }: {
-  setDate: React.Dispatch<React.SetStateAction<Date>>;
+  setDate: React.Dispatch<React.SetStateAction<Date | undefined>>;
 }) => {
   const handleDate = (e: Date) => {
-    console.log(dayjs(e).format("YYYY-MM-DD"));
     setDate(e);
   };
   return (
@@ -27,6 +22,7 @@ export const AddSchejule = ({
         placeholder="日付を選択"
         inputFormat="YYYY-MM-DD"
         onChange={handleDate}
+        clearable={true}
         required
       />
     </div>

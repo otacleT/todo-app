@@ -16,9 +16,14 @@ import { arrayMove, sortableKeyboardCoordinates } from "@dnd-kit/sortable";
 import { TodoList } from "../TodoList";
 import { AddTodo } from "../Addtodo";
 import { TodoBlock } from "../TodoBlock";
+import { TodoItem } from "../TodoItem";
 
 type Props = {
-  [key: string]: UniqueIdentifier[];
+  [key: string]: {
+    id: UniqueIdentifier;
+    title: string;
+    date: Date | undefined;
+  }[];
 };
 
 export const TodoContainer = () => {
@@ -49,7 +54,7 @@ export const TodoContainer = () => {
           <TodoList label="Doing" id="doing" items={items.doing} />
           <TodoList label="Done" id="done" items={items.done} />
           <DragOverlay>
-            {activeId ? <TodoBlock title={activeId} /> : null}
+            {activeId ? <TodoItem id={activeId} /> : null}
           </DragOverlay>
         </DndContext>
       </div>
@@ -62,10 +67,14 @@ export const TodoContainer = () => {
     }
     // console.log(Object.keys(items));
     // console.log(Object.keys(items).find((key) => items[key].includes(id)));
-
-    return Object.keys(items).find((key) => items[key].includes(id));
+    // return Object.keys(items).find((key) => items[key].includes(id));
+    const array = Object.keys(items);
+    for (const x of array) {
+      if (items[x].find((item) => item.id === id)) {
+        return x;
+      }
+    }
   }
-
   function handleDragStart(event: DragStartEvent) {
     const { active } = event;
     const { id } = active;
@@ -82,6 +91,7 @@ export const TodoContainer = () => {
     const { id: overId } = over;
 
     // Find the containers
+    // todo,doing,doneのいずれかを持つ
     const activeContainer = findContainer(id);
     const overContainer = findContainer(overId);
 
@@ -94,12 +104,29 @@ export const TodoContainer = () => {
     }
 
     setItems((prev) => {
+      // 移動元のコンテナの要素配列を取得
       const activeItems = prev[activeContainer];
+      console.log(activeItems);
+
+      // 移動先のコンテナの要素配列を取得
       const overItems = prev[overContainer];
+      console.log(overItems);
 
       // Find the indexes for the items
-      const activeIndex = activeItems.indexOf(id);
-      const overIndex = overItems.indexOf(overId);
+      // for (const x of activeItems) {
+      //   if (activeItems.find((item) => item.id === id)) {
+      //     const activeItems = x;
+      //     return;
+      //   }
+      // }
+      // const activeIndex = activeItems.indexOf(id);
+      // const overIndex = overItems.indexOf(overId);
+      const activeIndex = items[activeContainer].findIndex(
+        (item) => item.id === active.id
+      );
+      const overIndex = items[overContainer].findIndex(
+        (item) => item.id === overId
+      );
 
       let newIndex;
       if (overId in prev) {
@@ -116,7 +143,7 @@ export const TodoContainer = () => {
       return {
         ...prev,
         [activeContainer]: [
-          ...prev[activeContainer].filter((item) => item !== active.id),
+          ...prev[activeContainer].filter((item) => item.id !== active.id),
         ],
         [overContainer]: [
           ...prev[overContainer].slice(0, newIndex),
@@ -146,8 +173,14 @@ export const TodoContainer = () => {
       return;
     }
 
-    const activeIndex = items[activeContainer].indexOf(active.id);
-    const overIndex = items[overContainer].indexOf(overId);
+    // const activeIndex = items[activeContainer].indexOf(active.id);
+    // const overIndex = items[overContainer].indexOf(overId);
+    const activeIndex = items[activeContainer].findIndex(
+      (item) => item.id === active.id
+    );
+    const overIndex = items[overContainer].findIndex(
+      (item) => item.id === overId
+    );
     console.log(activeIndex);
     console.log(overIndex);
 
