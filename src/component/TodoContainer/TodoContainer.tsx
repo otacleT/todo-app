@@ -15,7 +15,6 @@ import {
 import { arrayMove, sortableKeyboardCoordinates } from "@dnd-kit/sortable";
 import { TodoList } from "../TodoList";
 import { AddTodo } from "../Addtodo";
-import { TodoBlock } from "../TodoBlock";
 import { TodoItem } from "../TodoItem";
 
 type Props = {
@@ -65,9 +64,6 @@ export const TodoContainer = () => {
     if (id in items) {
       return id;
     }
-    // console.log(Object.keys(items));
-    // console.log(Object.keys(items).find((key) => items[key].includes(id)));
-    // return Object.keys(items).find((key) => items[key].includes(id));
     const array = Object.keys(items);
     for (const x of array) {
       if (items[x].find((item) => item.id === id)) {
@@ -113,14 +109,6 @@ export const TodoContainer = () => {
       console.log(overItems);
 
       // Find the indexes for the items
-      // for (const x of activeItems) {
-      //   if (activeItems.find((item) => item.id === id)) {
-      //     const activeItems = x;
-      //     return;
-      //   }
-      // }
-      // const activeIndex = activeItems.indexOf(id);
-      // const overIndex = overItems.indexOf(overId);
       const activeIndex = items[activeContainer].findIndex(
         (item) => item.id === active.id
       );
@@ -172,9 +160,6 @@ export const TodoContainer = () => {
     ) {
       return;
     }
-
-    // const activeIndex = items[activeContainer].indexOf(active.id);
-    // const overIndex = items[overContainer].indexOf(overId);
     const activeIndex = items[activeContainer].findIndex(
       (item) => item.id === active.id
     );
