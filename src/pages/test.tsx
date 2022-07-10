@@ -18,7 +18,7 @@ import {
   sortableKeyboardCoordinates,
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
-import SortableItem from "../component/Test";
+import SortableItem from "src/component/Test";
 
 type Props = {
   [key: string]: { id: UniqueIdentifier; title: string; date: Date }[];
