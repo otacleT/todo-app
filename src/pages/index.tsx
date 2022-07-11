@@ -13,7 +13,6 @@ const Home: NextPage = () => {
       </Head>
       <Header />
       <main>
-        <h2 className="text-3xl font-bold text-center mt-5">Todo App</h2>
         <TodoContainer />
       </main>
     </div>

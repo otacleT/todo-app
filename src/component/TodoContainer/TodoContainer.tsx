@@ -32,6 +32,7 @@ export const TodoContainer = () => {
     doing: [],
     done: [],
   });
+
   const sensors = useSensors(
     useSensor(PointerSensor),
     useSensor(KeyboardSensor, {
@@ -53,13 +54,26 @@ export const TodoContainer = () => {
           <TodoList label="Doing" id="doing" items={items.doing} />
           <TodoList label="Done" id="done" items={items.done} />
           <DragOverlay>
-            {activeId ? <TodoItem id={activeId} /> : null}
+            {activeId ? (
+              <TodoItem
+                id={activeId}
+                title={findId(activeId)?.title}
+                date={findId(activeId)?.date}
+              />
+            ) : null}
           </DragOverlay>
         </DndContext>
       </div>
     </div>
   );
 
+  function findId(id: UniqueIdentifier) {
+    const array = Object.keys(items);
+    for (const x of array) {
+      return items[x].find((item) => item.id === id);
+    }
+    return null;
+  }
   function findContainer(id: UniqueIdentifier) {
     if (id in items) {
       return id;
@@ -102,11 +116,9 @@ export const TodoContainer = () => {
     setItems((prev) => {
       // 移動元のコンテナの要素配列を取得
       const activeItems = prev[activeContainer];
-      console.log(activeItems);
 
       // 移動先のコンテナの要素配列を取得
       const overItems = prev[overContainer];
-      console.log(overItems);
 
       // Find the indexes for the items
       const activeIndex = items[activeContainer].findIndex(
@@ -166,8 +178,6 @@ export const TodoContainer = () => {
     const overIndex = items[overContainer].findIndex(
       (item) => item.id === overId
     );
-    console.log(activeIndex);
-    console.log(overIndex);
 
     if (activeIndex !== overIndex) {
       setItems((items) => ({
