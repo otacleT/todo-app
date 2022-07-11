@@ -43,7 +43,7 @@ export const Header = () => {
               <a href="/" target="_black" rel="noopenner">
                 <Image
                   className="rounded-full"
-                  src="/demo.jpg"
+                  src="/demo.png"
                   width={40}
                   height={40}
                   alt="demo"
