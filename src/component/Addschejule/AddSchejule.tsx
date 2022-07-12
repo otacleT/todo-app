@@ -1,5 +1,4 @@
 import { DatePicker } from "@mantine/dates";
-import { AiOutlineCalendar } from "react-icons/ai";
 
 /**@package */
 export const AddSchejule = ({
