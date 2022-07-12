@@ -22,6 +22,7 @@ type Props = {
     id: UniqueIdentifier;
     title: string;
     date: Date | undefined;
+    color: string;
   }[];
 };
 
@@ -59,6 +60,7 @@ export const TodoContainer = () => {
                 id={activeId}
                 title={findId(activeId)?.title}
                 date={findId(activeId)?.date}
+                color={findId(activeId)?.color}
               />
             ) : null}
           </DragOverlay>
