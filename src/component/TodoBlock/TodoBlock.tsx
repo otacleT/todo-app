@@ -1,23 +1,34 @@
 import dayjs from "dayjs";
-import { FC } from "react";
+import { CSSProperties, FC } from "react";
 
 type Props = {
   title?: string;
   date: Date | undefined;
+  color?: string;
 };
 
 /**@package */
 export const TodoBlock: FC<Props> = (props) => {
-  const { title, date } = props;
+  const { title, date, color } = props;
+  const style: CSSProperties = {
+    borderLeft: `3px solid ${color}`,
+  };
+
   return (
-    <button className="text-md font-bold block border-2 border-gray-300 shadow-lg shadow-black/30 w-full p-2 rounded-md">
+    <button
+      style={style}
+      className="relative text-md font-bold block text-left shadow-lg shadow-black/30 w-full py-2 px-4"
+    >
       {title}
       <br />
       {date ? (
-        <span className="text-sm font-bold text-gray">
+        <span className="text-sm font-bold text-gray border-t-2 text-gray-500 border-gray-500 mt-3 inline-block">
           {dayjs(date).format("YYYY-MM-DD")}
         </span>
       ) : null}
+      <span
+        className={`block w-5 h-5 rounded-full bg-cyan-500 absolute right-2 bottom-2`}
+      ></span>
     </button>
   );
 };
