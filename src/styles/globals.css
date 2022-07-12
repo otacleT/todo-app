@@ -14,3 +14,7 @@
   background: #333 !important;
   border: 1px double #333 !important;
 }
+
+.mantine-ColorPicker-wrapper {
+  width: 100%;
+}
