@@ -1,4 +1,5 @@
 import { UniqueIdentifier } from "@dnd-kit/core";
+import { ColorPicker } from "@mantine/core";
 import { ChangeEventHandler, FC, useState } from "react";
 import { AddSchejule } from "../Addschejule";
 
@@ -7,6 +8,7 @@ type Props = {
     id: UniqueIdentifier;
     title: string;
     date: Date | undefined;
+    color: string;
   }[];
 };
 
@@ -19,6 +21,7 @@ export const AddTodo: FC<TodoInput> = (props) => {
   const { setItems } = props;
   const [text, setText] = useState<string>("");
   const [date, setDate] = useState<Date | undefined>();
+  const [color, setColor] = useState<string>("");
 
   const handleInput: ChangeEventHandler<HTMLInputElement> = (e) => {
     setText(e.target.value);
@@ -34,12 +37,17 @@ export const AddTodo: FC<TodoInput> = (props) => {
             id: Math.round(Math.random() * 100000),
             title: text,
             date: date,
+            color: color,
           },
         ],
       };
     });
     setText("");
     setDate(undefined);
+  };
+
+  const handleColor = (e: string) => {
+    setColor(e);
   };
 
   return (
@@ -55,6 +63,26 @@ export const AddTodo: FC<TodoInput> = (props) => {
       <div className="flex justify-between items-center mt-2">
         <AddSchejule setDate={setDate} />
       </div>
+      <ColorPicker
+        format="hex"
+        swatches={[
+          "#25262b",
+          "#868e96",
+          "#fa5252",
+          "#e64980",
+          "#be4bdb",
+          "#7950f2",
+          "#4c6ef5",
+          "#228be6",
+          "#15aabf",
+          "#12b886",
+          "#40c057",
+          "#82c91e",
+          "#fab005",
+          "#fd7e14",
+        ]}
+        onChange={handleColor}
+      />
       <button
         onClick={handleAdd}
         className="w-full mt-5 h-10 flex items-center justify-center text-md font-bold rounded-sm text-white bg-black"
