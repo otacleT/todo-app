@@ -1,5 +1,5 @@
 import { DatePicker } from "@mantine/dates";
-import { BsCalendar } from "react-icons/bs";
+import { AiOutlineCalendar } from "react-icons/ai";
 
 /**@package */
 export const AddSchejule = ({
@@ -11,13 +11,9 @@ export const AddSchejule = ({
     setDate(e);
   };
   return (
-    <div className="flex justify-between">
-      <p className="w-[80px] text-md flex justify-around items-center text-lg">
-        <BsCalendar />
-        <span className="text-sm">期限</span>
-      </p>
+    <div>
+      <p className="text-[14px] font-bold">date</p>
       <DatePicker
-        className="w-[calc(100%-90px)]"
         classNames={{ input: "rounded-none" }}
         placeholder="日付を選択"
         inputFormat="YYYY-MM-DD"
