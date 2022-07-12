@@ -11,7 +11,7 @@ type Props = {
 export const TodoBlock: FC<Props> = (props) => {
   const { title, date, color } = props;
   const style: CSSProperties = {
-    borderLeft: `3px solid ${color}`,
+    borderLeft: `5px solid ${color}`,
   };
 
   return (
