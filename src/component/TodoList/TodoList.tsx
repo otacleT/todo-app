@@ -9,7 +9,12 @@ import { TodoItem } from "../TodoItem";
 type Props = {
   id: string;
   label: string;
-  items: { id: UniqueIdentifier; title: string; date: Date | undefined }[];
+  items: {
+    id: UniqueIdentifier;
+    title: string;
+    date: Date | undefined;
+    color: string;
+  }[];
 };
 /**@package */
 export const TodoList: FC<Props> = (props) => {
@@ -31,7 +36,13 @@ export const TodoList: FC<Props> = (props) => {
           className="w-full border-2 border-gray-500/75 p-5 mt-2 rounded-md"
         >
           {items.map((id) => (
-            <TodoItem key={id.id} id={id.id} title={id.title} date={id.date} />
+            <TodoItem
+              key={id.id}
+              id={id.id}
+              title={id.title}
+              date={id.date}
+              color={id.color}
+            />
           ))}
         </div>
       </SortableContext>
