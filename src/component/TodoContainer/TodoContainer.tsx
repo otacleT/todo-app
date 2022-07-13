@@ -43,8 +43,12 @@ export const TodoContainer = () => {
   const findId = useCallback(
     (id: UniqueIdentifier) => {
       const array = Object.keys(items);
+      let info;
       for (const x of array) {
-        return items[x].find((item) => item.id === id);
+        if (items[x].find((item) => item.id === id)) {
+          info = items[x].find((item) => item.id === id);
+          return info;
+        }
       }
       return null;
     },
@@ -175,6 +179,7 @@ export const TodoContainer = () => {
     },
     [items]
   );
+
   return (
     <div className="flex justify-between max-w-6xl mx-auto px-3 mt-10">
       <AddTodo setItems={setItems} />
