@@ -44,6 +44,7 @@ export const AddTodo: FC<TodoInput> = (props) => {
     });
     setText("");
     setDate(null);
+    setColor("#ffffff");
   }, [text, date, color]);
 
   const handleColor = useCallback((e: string) => {
