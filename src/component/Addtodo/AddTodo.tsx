@@ -7,7 +7,7 @@ type Props = {
   [key: string]: {
     id: UniqueIdentifier;
     title: string;
-    date: Date | undefined;
+    date: Date | null;
     color: string;
   }[];
 };
@@ -20,7 +20,7 @@ type TodoInput = {
 export const AddTodo: FC<TodoInput> = (props) => {
   const { setItems } = props;
   const [text, setText] = useState<string>("");
-  const [date, setDate] = useState<Date | undefined>();
+  const [date, setDate] = useState<Date | null>(null);
   const [color, setColor] = useState<string>("");
 
   const handleInput: ChangeEventHandler<HTMLInputElement> = (e) => {
@@ -43,7 +43,7 @@ export const AddTodo: FC<TodoInput> = (props) => {
       };
     });
     setText("");
-    setDate(undefined);
+    setDate(null);
   }, [text, date, color]);
 
   const handleColor = useCallback((e: string) => {
@@ -71,6 +71,7 @@ export const AddTodo: FC<TodoInput> = (props) => {
         inputFormat="YYYY-MM-DD"
         onChange={handleDate}
         clearable={true}
+        value={date}
         required
       />
       <p className="text-[14px] font-bold mt-3">color</p>

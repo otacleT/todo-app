@@ -3,7 +3,7 @@ import { CSSProperties, FC } from "react";
 
 type Props = {
   title?: string;
-  date: Date | undefined;
+  date?: Date | null;
   color?: string;
 };
 
