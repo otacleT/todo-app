@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Task, getTasks } from '../../../Firebase/tasks';
+import { Task, getTasks } from '../../../../Firebase/tasks';
 
 export type UseTasksOutput = {
   isLoading: boolean;

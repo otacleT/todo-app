@@ -1,6 +1,7 @@
+import dayjs from 'dayjs';
 import { getApp, FirebaseApp } from 'firebase/app';
 import { FunctionComponent, useState } from 'react';
-import { useTasks } from './firebase.hooks';
+import { useTasks } from './hooks/firebase.hooks';
 
 export const FirebaseTest: FunctionComponent = () => {
   const app: FirebaseApp = getApp();
@@ -17,10 +18,13 @@ export const FirebaseTest: FunctionComponent = () => {
       </ul>
       <ul>
         {tasks.map((task) => {
+          const dueDate = dayjs(task.date.toDate());
           return (
-            <li key={task.id}>{`タイトル: ${task.title},メモ: ${
-              task.detail
-            },${task.date.toDate()}`}</li>
+            <li key={task.id}>
+              {`タイトル: ${task.title},メモ: ${task.detail},${dayjs(
+                dueDate.format('YYYY-MM-DD'),
+              )}`}
+            </li>
           );
         })}
       </ul>

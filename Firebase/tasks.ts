@@ -1,9 +1,10 @@
-import { collection, getDocs, getFirestore } from 'firebase/firestore';
+import { collection, getDocs, getFirestore, FieldValue, doc, setDoc } from 'firebase/firestore';
 
 export type Task = {
   id: string;
   title: string;
   detail: string;
+  //   date: FieldValue;
   date: any;
 };
 
@@ -18,4 +19,11 @@ export async function getTasks(): Promise<Task[]> {
   });
 
   return tasks;
+}
+
+export async function addTasks(task: Task): Promise<void> {
+  const db = getFirestore();
+  const docRef = doc(db, 'tasks', task.id);
+
+  await setDoc(docRef, { title: task.title, detail: task.detail }, { merge: true });
 }
