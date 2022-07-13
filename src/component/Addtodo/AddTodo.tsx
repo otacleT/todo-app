@@ -1,6 +1,6 @@
 import { UniqueIdentifier } from "@dnd-kit/core";
 import { ColorPicker } from "@mantine/core";
-import { ChangeEventHandler, FC, useState } from "react";
+import { ChangeEventHandler, FC, useCallback, useState } from "react";
 import { DatePicker } from "@mantine/dates";
 
 type Props = {
@@ -26,7 +26,7 @@ export const AddTodo: FC<TodoInput> = (props) => {
   const handleInput: ChangeEventHandler<HTMLInputElement> = (e) => {
     setText(e.target.value);
   };
-  const handleAdd = () => {
+  const handleAdd = useCallback(() => {
     setItems((prevItems) => {
       const { todo } = prevItems;
       return {
@@ -44,14 +44,14 @@ export const AddTodo: FC<TodoInput> = (props) => {
     });
     setText("");
     setDate(undefined);
-  };
+  }, [text, date, color]);
 
-  const handleColor = (e: string) => {
+  const handleColor = useCallback((e: string) => {
     setColor(e);
-  };
-  const handleDate = (e: Date) => {
+  }, []);
+  const handleDate = useCallback((e: Date) => {
     setDate(e);
-  };
+  }, []);
 
   return (
     <div className="w-[20%]">
@@ -90,7 +90,9 @@ export const AddTodo: FC<TodoInput> = (props) => {
         ]}
         onChange={handleColor}
       />
-      <p className="text-center text-md">{color}</p>
+      <p className="text-center text-md font-[14px] leading-[34px] border-[#ced4da] border mt-2">
+        {color}
+      </p>
       <button
         onClick={handleAdd}
         className="w-full mt-5 h-10 flex items-center justify-center text-md font-bold rounded-full text-white bg-black"
