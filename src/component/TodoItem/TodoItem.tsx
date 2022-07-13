@@ -7,7 +7,7 @@ import { UniqueIdentifier } from "@dnd-kit/core";
 type Props = {
   id: UniqueIdentifier;
   title?: string;
-  date?: Date | undefined;
+  date?: Date | null;
   color?: string;
 };
 

@@ -12,7 +12,7 @@ type Props = {
   items: {
     id: UniqueIdentifier;
     title: string;
-    date: Date | undefined;
+    date: Date | null;
     color: string;
   }[];
 };
