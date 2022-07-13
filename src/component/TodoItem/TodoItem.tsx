@@ -8,6 +8,7 @@ type Props = {
   id: UniqueIdentifier;
   title?: string;
   date?: Date | undefined;
+  color?: string;
 };
 
 /**@package */
@@ -28,7 +29,7 @@ export const TodoItem: FC<Props> = (props) => {
       {...attributes}
       {...listeners}
     >
-      <TodoBlock title={props.title} date={props.date} />
+      <TodoBlock title={props.title} date={props.date} color={props.color} />
     </div>
   );
 };
