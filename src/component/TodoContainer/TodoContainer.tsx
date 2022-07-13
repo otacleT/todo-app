@@ -21,10 +21,19 @@ type Props = {
   [key: string]: {
     id: UniqueIdentifier;
     title: string;
-    date: Date | undefined;
+    date: Date | null;
     color: string;
   }[];
 };
+
+type Item =
+  | {
+      id: UniqueIdentifier;
+      title: string;
+      date: Date | null;
+      color: string;
+    }
+  | undefined;
 
 export const TodoContainer = () => {
   const [activeId, setActiveId] = useState<UniqueIdentifier | null>();
@@ -41,16 +50,19 @@ export const TodoContainer = () => {
     })
   );
   const findId = useCallback(
-    (id: UniqueIdentifier) => {
+    (id: UniqueIdentifier): Item => {
       const array = Object.keys(items);
       let info;
+      let check: boolean = false;
       for (const x of array) {
         if (items[x].find((item) => item.id === id)) {
           info = items[x].find((item) => item.id === id);
-          return info;
+          check = true;
+          break;
         }
       }
-      return null;
+      if (check && info) return info;
+      return undefined;
     },
     [items]
   );
