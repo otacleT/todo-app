@@ -8,7 +8,7 @@ import { useAuthState } from './hooks/authentication';
 
 /**@package */
 export const Header: FunctionComponent = () => {
-  const { isSignedIn } = useAuthState();
+  const { isSignedIn, userName } = useAuthState();
   const router = useRouter();
 
   const handleSignin = useCallback(() => {
@@ -57,6 +57,9 @@ export const Header: FunctionComponent = () => {
               >
                 <AiFillTwitterCircle />
               </a>
+            </li>
+            <li className='px-3'>
+              <div>{userName}</div>
             </li>
             <li className='px-3'>
               <div>

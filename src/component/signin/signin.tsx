@@ -6,7 +6,7 @@ import {
   // TwitterAuthProvider,
 } from 'firebase/auth';
 import { auth } from 'firebaseui';
-import { FunctionComponent, useState, useEffect } from 'react';
+import { FunctionComponent } from 'react';
 import StyledFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth';
 
 const uiConfig: auth.Config = {
