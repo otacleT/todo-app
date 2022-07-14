@@ -29,7 +29,7 @@ export const AddTodo: FC<TodoInput> = (props) => {
   const handleAdd = useCallback(() => {
     setItems((prevItems) => {
       const { todo } = prevItems;
-      return {
+      const newItems = {
         ...prevItems,
         todo: [
           ...todo,
@@ -41,6 +41,7 @@ export const AddTodo: FC<TodoInput> = (props) => {
           },
         ],
       };
+      return newItems;
     });
     setText("");
     setDate(null);
