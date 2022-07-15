@@ -1,15 +1,7 @@
 import { UniqueIdentifier } from '@dnd-kit/core';
 import { ColorPicker } from '@mantine/core';
 import { DatePicker } from '@mantine/dates';
-import {
-  collection,
-  getDocs,
-  getFirestore,
-  FieldValue,
-  doc,
-  addDoc,
-  Timestamp,
-} from 'firebase/firestore';
+import { getFirestore, FieldValue, doc, addDoc, setDoc, Timestamp } from 'firebase/firestore';
 import { ChangeEventHandler, FC, useCallback, useState } from 'react';
 import { useAuthState } from '../Header/hooks/authentication';
 
@@ -30,7 +22,7 @@ type TodoInput = {
 export const AddTodo: FC<TodoInput> = (props) => {
   const { setItems } = props;
 
-  const defaultTime = new Date('2020/01/01 01:11:00');
+  const defaultTime = new Date();
   const [text, setText] = useState<string>('');
   const [date, setDate] = useState<Date>(defaultTime);
   const [color, setColor] = useState<string>('');
@@ -41,12 +33,13 @@ export const AddTodo: FC<TodoInput> = (props) => {
   };
   const handleAdd = useCallback(async () => {
     const db = getFirestore();
-    const docRef = collection(db, `users/${userId}/tasks`);
+    const curretTaskId = Math.round(Math.random() * 10000000000);
+    const docRef = doc(db, `users/${userId}/tasks`, curretTaskId.toString());
     const convertTimeStamp = Timestamp.fromDate(date);
-    await addDoc(docRef, {
+    await setDoc(docRef, {
       title: text,
       color: color,
-      status: 'Todo',
+      status: 'Doing',
       date: convertTimeStamp,
     });
 
@@ -57,7 +50,7 @@ export const AddTodo: FC<TodoInput> = (props) => {
         todo: [
           ...todo,
           {
-            id: Math.round(Math.random() * 100000),
+            id: curretTaskId,
             title: text,
             date: date,
             color: color,
