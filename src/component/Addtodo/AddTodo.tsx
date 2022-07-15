@@ -29,7 +29,7 @@ export const AddTodo: FC<TodoInput> = (props) => {
   const handleAdd = useCallback(() => {
     setItems((prevItems) => {
       const { todo } = prevItems;
-      return {
+      const newItems = {
         ...prevItems,
         todo: [
           ...todo,
@@ -41,6 +41,7 @@ export const AddTodo: FC<TodoInput> = (props) => {
           },
         ],
       };
+      return newItems;
     });
     setText("");
     setDate(null);
@@ -57,7 +58,9 @@ export const AddTodo: FC<TodoInput> = (props) => {
   return (
     <div className="w-[20%]">
       <h3 className="text-xl font-bold text-center">Todoリストを追加</h3>
-      <p className="text-[14px] font-bold">title</p>
+      <p className="text-[14px] font-bold">
+        title<span className="text-rose-500">*</span>
+      </p>
       <input
         className="w-full border border-[#ced4da] leading-[34px] px-[12px] rounded-sm text-[14px]"
         value={text}
@@ -65,7 +68,9 @@ export const AddTodo: FC<TodoInput> = (props) => {
         type="text"
         placeholder="勉強する"
       />
-      <p className="text-[14px] font-bold mt-3">date</p>
+      <p className="text-[14px] font-bold mt-3">
+        date<span className="text-rose-500">*</span>
+      </p>
       <DatePicker
         classNames={{ input: "rounded-none" }}
         placeholder="日付を選択"
@@ -95,12 +100,18 @@ export const AddTodo: FC<TodoInput> = (props) => {
       <p className="text-center text-md font-[14px] leading-[34px] border-[#ced4da] border mt-2">
         {color}
       </p>
-      <button
-        onClick={handleAdd}
-        className="w-full mt-5 h-10 flex items-center justify-center text-md font-bold rounded-full text-white bg-black"
-      >
-        追加
-      </button>
+      {text != "" && date != null ? (
+        <button
+          onClick={handleAdd}
+          className="w-full mt-5 h-10 flex items-center justify-center text-md font-bold rounded-full text-white bg-black"
+        >
+          追加
+        </button>
+      ) : (
+        <button className="w-full mt-5 h-10 flex items-center justify-center text-md font-bold rounded-full text-white bg-black opacity-75 cursor-not-allowed">
+          追加
+        </button>
+      )}
     </div>
   );
 };
