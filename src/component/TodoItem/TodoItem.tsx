@@ -10,6 +10,7 @@ type Props = {
   date?: Date | null;
   color?: string;
   handleDelete: (id: UniqueIdentifier) => void;
+  handleUpdate: () => void;
 };
 
 /**@package */
@@ -31,6 +32,7 @@ export const TodoItem: FC<Props> = (props) => {
         date={props.date}
         color={props.color}
         handleDelete={props.handleDelete}
+        handleUpdate={props.handleUpdate}
       />
     </div>
   );
