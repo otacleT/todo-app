@@ -12,11 +12,13 @@ import {
   DragEndEvent,
 } from '@dnd-kit/core';
 import { arrayMove, sortableKeyboardCoordinates } from '@dnd-kit/sortable';
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect, FunctionComponent } from 'react';
 import { AddTodo } from '../Addtodo';
 import { TodoBlock } from '../TodoBlock';
 import { TodoItem } from '../TodoItem';
 import { TodoList } from '../TodoList';
+import { useTasks } from './hooks/getAuthTasks.hooks';
+import { useAuthState } from 'src/component/Header/hooks/authentication';
 
 type Props = {
   [key: string]: {
@@ -36,13 +38,26 @@ type Item =
     }
   | undefined;
 
-export const TodoContainer = () => {
+export const TodoContainer: FunctionComponent = () => {
   const [activeId, setActiveId] = useState<UniqueIdentifier | null>();
+  const { isLoading, todos, doings, dones } = useTasks();
+
   const [items, setItems] = useState<Props>({
     todo: [],
     doing: [],
     done: [],
   });
+
+  useEffect(() => {
+    setItems((prevTodos) => {
+      return {
+        ...prevTodos,
+        todo: todos,
+        doing: doings,
+        done: dones,
+      };
+    });
+  }, [isLoading]);
 
   const sensors = useSensors(
     useSensor(PointerSensor),

@@ -6,7 +6,7 @@ import { useTasks } from './hooks/firebase.hooks';
 
 export const FirebaseTest: FunctionComponent = () => {
   const app: FirebaseApp = getApp();
-  const { isLoading, tasks } = useTasks();
+  const { isLoading, todos, doings, dones } = useTasks();
 
   if (isLoading) return <p>LoadingNow.....</p>;
 
@@ -18,7 +18,18 @@ export const FirebaseTest: FunctionComponent = () => {
         <li>apiKey = {app.options.apiKey}</li>
       </ul>
       <ul>
-        {tasks.map((task) => {
+        {todos.map((task) => {
+          const dueDate = dayjs(task.date.toDate());
+          return (
+            <li key={task.id} style={{ color: `${task.color}` }}>
+              {`タイトル: ${task.title},メモ: ${task.color},${dayjs(dueDate.format('YYYY-MM-DD'))}`}
+            </li>
+          );
+        })}
+      </ul>
+      <div>--------</div>
+      <ul>
+        {dones.map((task) => {
           const dueDate = dayjs(task.date.toDate());
           return (
             <li key={task.id} style={{ color: `${task.color}` }}>

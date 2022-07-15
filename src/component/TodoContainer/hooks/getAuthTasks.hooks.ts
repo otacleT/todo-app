@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Task, getTasks, getAuthTasks } from '../../../../Firebase/tasks';
+import { Task, getAuthTasks } from '../../../../Firebase/tasks';
 import { useAuthState } from 'src/component/Header/hooks/authentication';
 
 export type UseTasksOutput = {
@@ -18,9 +18,6 @@ const DEFAULT_OUTPUT: UseTasksOutput = {
 
 export function useTasks(): UseTasksOutput {
   const [output, setOutput] = useState(DEFAULT_OUTPUT);
-  // const [currentTodo, setCurretTodo] = useState<Task[]>([]);
-  // const [currentDoing, setCurretDoing] = useState({});
-  // const [currentDone, setCurretDone] = useState({});
   const { userId } = useAuthState();
 
   useEffect(() => {
@@ -33,10 +30,13 @@ export function useTasks(): UseTasksOutput {
 
       tasks.forEach((task) => {
         if (task.status === 'Todo') {
+          task.date = task.date.toDate();
           todos.push(task);
         } else if (task.status === 'Doing') {
+          task.date = task.date.toDate();
           doings.push(task);
         } else {
+          task.date = task.date.toDate();
           dones.push(task);
         }
       });

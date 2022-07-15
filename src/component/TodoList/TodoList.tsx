@@ -26,8 +26,14 @@ export const TodoList: FC<Props> = (props) => {
       <h3 className='text-xl font-bold text-center'>{label}</h3>
       <SortableContext id={id} items={items} strategy={verticalListSortingStrategy}>
         <div ref={setNodeRef} className='w-full border-2 border-gray-500/75 p-5 mt-2 rounded-md'>
-          {items.map((id) => (
-            <TodoItem key={id.id} id={id.id} title={id.title} date={id.date} color={id.color} />
+          {items.map((item) => (
+            <TodoItem
+              key={item.id}
+              id={item.id}
+              title={item.title}
+              date={item.date}
+              color={item.color}
+            />
           ))}
         </div>
       </SortableContext>

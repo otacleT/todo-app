@@ -7,6 +7,7 @@ export type Task = {
   color: string;
   //   date: FieldValue;
   date: any;
+  status: string;
 };
 
 export async function getTasks(): Promise<Task[]> {
