@@ -18,7 +18,6 @@ import { TodoBlock } from '../TodoBlock';
 import { TodoItem } from '../TodoItem';
 import { TodoList } from '../TodoList';
 import { useTasks } from './hooks/getAuthTasks.hooks';
-import { useAuthState } from 'src/component/Header/hooks/authentication';
 
 type Props = {
   [key: string]: {
@@ -57,7 +56,7 @@ export const TodoContainer: FunctionComponent = () => {
         done: dones,
       };
     });
-  }, [isLoading]);
+  }, [isLoading, todos, doings, dones]);
 
   const sensors = useSensors(
     useSensor(PointerSensor),
