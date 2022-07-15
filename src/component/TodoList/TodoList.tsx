@@ -25,6 +25,9 @@ export const TodoList: FC<Props> = (props) => {
   const { setNodeRef } = useDroppable({
     id,
   });
+  const handleVisible = useCallback(() => {
+    setVisible(!visible);
+  }, [visible]);
   const handleUpdate = useCallback(() => {
     setVisible(!visible);
   }, [visible]);
@@ -41,21 +44,21 @@ export const TodoList: FC<Props> = (props) => {
               date={item.date}
               color={item.color}
               handleDelete={handleDelete}
-              handleUpdate={handleUpdate}
+              handleVisible={handleVisible}
             />
           ))}
         </div>
       </SortableContext>
       {visible ? (
         <div
-          onClick={() => handleUpdate()}
+          onClick={() => handleVisible()}
           className="w-full h-full fixed top-0 left-0 bg-black/30"
         ></div>
       ) : null}
       {visible ? (
         <div className="w-2/3 max-w-[400px] shadow-lg shadow-black/30 fixed top-1/2 left-1/2 translate-x-[-50%] translate-y-[-50%] bg-white px-3 pt-6 pb-3 rounded-sm">
           <span
-            onClick={() => handleUpdate()}
+            onClick={() => handleVisible()}
             className="text-2xl absolute right-2 top-2 cursor-pointer"
           >
             <IoCloseOutline />
