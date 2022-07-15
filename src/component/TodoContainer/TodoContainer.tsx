@@ -1,4 +1,3 @@
-import React, { useCallback, useState } from "react";
 import {
   DndContext,
   DragOverlay,
@@ -11,11 +10,15 @@ import {
   PointerSensor,
   KeyboardSensor,
   DragEndEvent,
-} from "@dnd-kit/core";
-import { arrayMove, sortableKeyboardCoordinates } from "@dnd-kit/sortable";
-import { TodoList } from "../TodoList";
-import { AddTodo } from "../Addtodo";
-import { TodoItem } from "../TodoItem";
+} from '@dnd-kit/core';
+import { arrayMove, sortableKeyboardCoordinates } from '@dnd-kit/sortable';
+import React, { useState, useCallback, useEffect, FunctionComponent } from 'react';
+import { AddTodo } from '../Addtodo';
+import { TodoBlock } from '../TodoBlock';
+import { TodoItem } from '../TodoItem';
+import { TodoList } from '../TodoList';
+import { useTasks } from './hooks/getAuthTasks.hooks';
+import { useAuthState } from 'src/component/Header/hooks/authentication';
 
 type Props = {
   [key: string]: {
@@ -35,19 +38,32 @@ type Item =
     }
   | undefined;
 
-export const TodoContainer = () => {
+export const TodoContainer: FunctionComponent = () => {
   const [activeId, setActiveId] = useState<UniqueIdentifier | null>();
+  const { isLoading, todos, doings, dones } = useTasks();
+
   const [items, setItems] = useState<Props>({
     todo: [],
     doing: [],
     done: [],
   });
 
+  useEffect(() => {
+    setItems((prevTodos) => {
+      return {
+        ...prevTodos,
+        todo: todos,
+        doing: doings,
+        done: dones,
+      };
+    });
+  }, [isLoading]);
+
   const sensors = useSensors(
     useSensor(PointerSensor),
     useSensor(KeyboardSensor, {
       coordinateGetter: sortableKeyboardCoordinates,
-    })
+    }),
   );
   const findId = useCallback(
     (id: UniqueIdentifier): Item => {
@@ -64,7 +80,7 @@ export const TodoContainer = () => {
       if (check && info) return info;
       return undefined;
     },
-    [items]
+    [items],
   );
   const findContainer = useCallback(
     (id: UniqueIdentifier) => {
@@ -78,7 +94,7 @@ export const TodoContainer = () => {
         }
       }
     },
-    [items]
+    [items],
   );
   const handleDragStart = useCallback((event: DragStartEvent) => {
     const { active } = event;
@@ -100,11 +116,7 @@ export const TodoContainer = () => {
       const activeContainer = findContainer(id);
       const overContainer = findContainer(overId);
 
-      if (
-        !activeContainer ||
-        !overContainer ||
-        activeContainer === overContainer
-      ) {
+      if (!activeContainer || !overContainer || activeContainer === overContainer) {
         return;
       }
 
@@ -116,12 +128,8 @@ export const TodoContainer = () => {
         const overItems = prev[overContainer];
 
         // Find the indexes for the items
-        const activeIndex = items[activeContainer].findIndex(
-          (item) => item.id === active.id
-        );
-        const overIndex = items[overContainer].findIndex(
-          (item) => item.id === overId
-        );
+        const activeIndex = items[activeContainer].findIndex((item) => item.id === active.id);
+        const overIndex = items[overContainer].findIndex((item) => item.id === overId);
 
         let newIndex;
         if (overId in prev) {
@@ -132,15 +140,12 @@ export const TodoContainer = () => {
 
           const modifier = isBelowLastItem ? 1 : 0;
 
-          newIndex =
-            overIndex >= 0 ? overIndex + modifier : overItems.length + 1;
+          newIndex = overIndex >= 0 ? overIndex + modifier : overItems.length + 1;
         }
 
         return {
           ...prev,
-          [activeContainer]: [
-            ...prev[activeContainer].filter((item) => item.id !== active.id),
-          ],
+          [activeContainer]: [...prev[activeContainer].filter((item) => item.id !== active.id)],
           [overContainer]: [
             ...prev[overContainer].slice(0, newIndex),
             items[activeContainer][activeIndex],
@@ -149,7 +154,7 @@ export const TodoContainer = () => {
         };
       });
     },
-    [items]
+    [items],
   );
   const handleDragEnd = useCallback(
     (event: DragEndEvent) => {
@@ -163,39 +168,27 @@ export const TodoContainer = () => {
       const activeContainer = findContainer(id);
       const overContainer = findContainer(overId);
 
-      if (
-        !activeContainer ||
-        !overContainer ||
-        activeContainer !== overContainer
-      ) {
+      if (!activeContainer || !overContainer || activeContainer !== overContainer) {
         return;
       }
-      const activeIndex = items[activeContainer].findIndex(
-        (item) => item.id === active.id
-      );
-      const overIndex = items[overContainer].findIndex(
-        (item) => item.id === overId
-      );
+      const activeIndex = items[activeContainer].findIndex((item) => item.id === active.id);
+      const overIndex = items[overContainer].findIndex((item) => item.id === overId);
 
       if (activeIndex !== overIndex) {
         setItems((items) => ({
           ...items,
-          [overContainer]: arrayMove(
-            items[overContainer],
-            activeIndex,
-            overIndex
-          ),
+          [overContainer]: arrayMove(items[overContainer], activeIndex, overIndex),
         }));
       }
       setActiveId(null);
     },
-    [items]
+    [items],
   );
 
   return (
-    <div className="flex justify-between max-w-6xl mx-auto px-3 mt-10">
+    <div className='flex justify-between max-w-6xl mx-auto px-3 mt-10'>
       <AddTodo setItems={setItems} />
-      <div className="flex justify-between w-[calc(80%-20px)] border-2 border-black rounded-xl py-1 px-[9px]">
+      <div className='flex justify-between w-[calc(80%-20px)] border-2 border-black rounded-xl py-1 px-[9px]'>
         <DndContext
           sensors={sensors}
           collisionDetection={closestCorners}
@@ -203,9 +196,9 @@ export const TodoContainer = () => {
           onDragOver={handleDragOver}
           onDragEnd={handleDragEnd}
         >
-          <TodoList label="Todo" id="todo" items={items.todo} />
-          <TodoList label="Doing" id="doing" items={items.doing} />
-          <TodoList label="Done" id="done" items={items.done} />
+          <TodoList label='Todo' id='todo' items={items.todo} />
+          <TodoList label='Doing' id='doing' items={items.doing} />
+          <TodoList label='Done' id='done' items={items.done} />
           <DragOverlay>
             {activeId ? (
               <TodoItem

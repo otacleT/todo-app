@@ -1,10 +1,7 @@
-import React, { FC } from "react";
-import { UniqueIdentifier, useDroppable } from "@dnd-kit/core";
-import {
-  SortableContext,
-  verticalListSortingStrategy,
-} from "@dnd-kit/sortable";
-import { TodoItem } from "../TodoItem";
+import { UniqueIdentifier, useDroppable } from '@dnd-kit/core';
+import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
+import React, { FC } from 'react';
+import { TodoItem } from '../TodoItem';
 
 type Props = {
   id: string;
@@ -16,6 +13,7 @@ type Props = {
     color: string;
   }[];
 };
+
 /**@package */
 export const TodoList: FC<Props> = (props) => {
   const { id, label, items } = props;
@@ -24,24 +22,17 @@ export const TodoList: FC<Props> = (props) => {
   });
 
   return (
-    <div className="w-[calc(33%-5px)]">
-      <h3 className="text-xl font-bold text-center">{label}</h3>
-      <SortableContext
-        id={id}
-        items={items}
-        strategy={verticalListSortingStrategy}
-      >
-        <div
-          ref={setNodeRef}
-          className="w-full border-2 border-gray-500/75 p-5 mt-2 rounded-md"
-        >
-          {items.map((id) => (
+    <div className='w-[calc(33%-5px)]'>
+      <h3 className='text-xl font-bold text-center'>{label}</h3>
+      <SortableContext id={id} items={items} strategy={verticalListSortingStrategy}>
+        <div ref={setNodeRef} className='w-full border-2 border-gray-500/75 p-5 mt-2 rounded-md'>
+          {items.map((item) => (
             <TodoItem
-              key={id.id}
-              id={id.id}
-              title={id.title}
-              date={id.date}
-              color={id.color}
+              key={item.id}
+              id={item.id}
+              title={item.title}
+              date={item.date}
+              color={item.color}
             />
           ))}
         </div>
