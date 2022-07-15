@@ -10,11 +10,12 @@ type Props = {
   date?: Date | null;
   color?: string;
   handleDelete: (id: UniqueIdentifier) => void;
+  handleUpdate: () => void;
 };
 
 /**@package */
 export const TodoBlock: FC<Props> = (props) => {
-  const { id, title, date, color, handleDelete } = props;
+  const { id, title, date, color, handleDelete, handleUpdate } = props;
   const style: CSSProperties = {
     borderLeft: `5px solid ${color}`,
   };
@@ -36,7 +37,7 @@ export const TodoBlock: FC<Props> = (props) => {
           <button
             data-dndkit-disabled-dnd-flag="true"
             className="text-lg"
-            onClick={() => console.log("ok")}
+            onClick={() => handleUpdate()}
           >
             <AiOutlineEdit />
           </button>
