@@ -233,7 +233,6 @@ export const TodoContainer: FunctionComponent = () => {
 
       const activeContainer = findContainer(id);
       const overContainer = findContainer(overId);
-      console.log(id, activeContainer, overId, overContainer);
 
       if (!activeContainer || !overContainer || activeContainer !== overContainer) {
         return;
