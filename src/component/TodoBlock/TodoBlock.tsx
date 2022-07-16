@@ -5,11 +5,11 @@ import { AiOutlineEdit } from "react-icons/ai";
 import { IoTrashOutline } from "react-icons/io5";
 
 type Props = {
-  id: UniqueIdentifier;
-  title: string;
-  date: Date | null;
-  color: string;
-  handleDelete: (id: UniqueIdentifier) => void;
+  id: UniqueIdentifier | undefined;
+  title: string | undefined;
+  date: Date | null | undefined;
+  color: string | undefined;
+  handleDelete: (id: UniqueIdentifier | undefined) => void;
   setIsShow: React.Dispatch<React.SetStateAction<boolean>>;
 };
 

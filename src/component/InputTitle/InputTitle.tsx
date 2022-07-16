@@ -1,7 +1,7 @@
 import { ChangeEventHandler, FC } from "react";
 
 type Props = {
-  text: string;
+  text: string | undefined;
   handleInput: ChangeEventHandler<HTMLInputElement>;
 };
 

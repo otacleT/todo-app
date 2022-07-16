@@ -68,7 +68,7 @@ export const TodoContainer: FunctionComponent = () => {
   }, [isLoading, todos, doings, dones]);
 
   const handleDelete = useCallback(
-    (id: UniqueIdentifier) => {
+    (id: UniqueIdentifier | undefined) => {
       const array = Object.keys(items);
       let container = "";
       for (const x of array) {

@@ -2,7 +2,7 @@ import { DatePicker } from "@mantine/dates";
 import { FC } from "react";
 
 type Props = {
-  date: Date | null;
+  date: Date | null | undefined;
   handleDate: (e: Date) => void;
 };
 

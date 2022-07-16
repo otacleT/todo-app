@@ -2,7 +2,7 @@ import { FC } from "react";
 import { ColorPicker } from "@mantine/core";
 
 type Props = {
-  color: string | null;
+  color: string | null | undefined;
   handleColor: (e: string) => void;
 };
 

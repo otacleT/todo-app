@@ -9,18 +9,18 @@ import { InputTitle } from "../InputTitle";
 
 type Props = {
   id: UniqueIdentifier | undefined;
-  title: string;
-  date: Date | null;
-  color: string;
+  title: string | undefined;
+  date: Date | null | undefined;
+  color: string | undefined;
   setIsShow: React.Dispatch<React.SetStateAction<boolean>>;
   handleText: React.ChangeEventHandler<HTMLInputElement>;
   handleDate: (e: Date) => void;
   handleColor: (e: string) => void;
   handleChange: (
     id: UniqueIdentifier | undefined,
-    title: string,
-    date: Date | null,
-    color: string,
+    title: string | undefined,
+    date: Date | null | undefined,
+    color: string | undefined,
   ) => void;
 };
 
