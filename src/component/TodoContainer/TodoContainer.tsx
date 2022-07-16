@@ -29,6 +29,7 @@ import { TodoItem } from "../TodoItem";
 import { TodoList } from "../TodoList";
 import { useTasks } from "./hooks/getAuthTasks.hooks";
 import { useAuthState } from "src/component/Header/hooks/authentication";
+import { UpdateTodo } from "../UpdateTodo";
 
 type Props = {
   [key: string]: {
@@ -57,10 +58,8 @@ export type Update = {
 
 export const TodoContainer: FunctionComponent = () => {
   const [activeId, setActiveId] = useState<UniqueIdentifier | null>();
-  const [visible, setVisible] = useState<boolean>(false);
   const { isLoading, todos, doings, dones } = useTasks();
   const { userId } = useAuthState();
-
   const [items, setItems] = useState<Props>({
     todo: [],
     doing: [],
@@ -125,7 +124,6 @@ export const TodoContainer: FunctionComponent = () => {
           [container]: updateArray,
         };
       });
-      setVisible(false);
     },
     [items],
   );
@@ -315,8 +313,6 @@ export const TodoContainer: FunctionComponent = () => {
             items={items.todo}
             handleDelete={handleDelete}
             handleUp={handleUp}
-            visible={visible}
-            setVisible={setVisible}
           />
           <TodoList
             label="Doing"
@@ -324,8 +320,6 @@ export const TodoContainer: FunctionComponent = () => {
             items={items.doing}
             handleDelete={handleDelete}
             handleUp={handleUp}
-            visible={visible}
-            setVisible={setVisible}
           />
           <TodoList
             label="Done"
@@ -333,8 +327,6 @@ export const TodoContainer: FunctionComponent = () => {
             items={items.done}
             handleDelete={handleDelete}
             handleUp={handleUp}
-            visible={visible}
-            setVisible={setVisible}
           />
           <DragOverlay>
             {activeId ? (
@@ -345,8 +337,6 @@ export const TodoContainer: FunctionComponent = () => {
                 color={findId(activeId)?.color}
                 handleDelete={handleDelete}
                 handleUp={handleUp}
-                visible={visible}
-                setVisible={setVisible}
               />
             ) : null}
           </DragOverlay>
