@@ -1,9 +1,7 @@
-import React, { ChangeEventHandler, FC, useCallback, useEffect, useState } from "react";
-import { DatePicker } from "@mantine/dates";
-import { ColorPicker } from "@mantine/core";
+import React, { FC } from "react";
 import { IoCloseOutline } from "react-icons/io5";
 import { UniqueIdentifier } from "@dnd-kit/core";
-import { ColorPick } from "../ColorPicker";
+import { ColorPick } from "../ColorPick";
 import { DatePick } from "../DatePick";
 import { InputTitle } from "../InputTitle";
 
