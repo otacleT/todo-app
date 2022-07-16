@@ -20,6 +20,7 @@ import { TodoItem } from "../TodoItem";
 import { TodoList } from "../TodoList";
 import { useTasks } from "./hooks/getAuthTasks.hooks";
 import { useAuthState } from "src/component/Header/hooks/authentication";
+import { UpdateTodo } from "../UpdateTodo";
 
 type Props = {
   [key: string]: {
@@ -38,9 +39,16 @@ type Item =
       color: string;
     }
   | undefined;
+export type Update = {
+  id: UniqueIdentifier;
+  title: string | undefined;
+  date: Date | null | undefined;
+  color: string | undefined;
+};
 
 export const TodoContainer: FunctionComponent = () => {
   const [activeId, setActiveId] = useState<UniqueIdentifier | null>();
+  const [visible, setVisible] = useState<boolean>(false);
   const { isLoading, todos, doings, dones } = useTasks();
 
   const [items, setItems] = useState<Props>({
@@ -59,6 +67,7 @@ export const TodoContainer: FunctionComponent = () => {
       };
     });
   }, [isLoading]);
+
   const handleDelete = useCallback(
     (id: UniqueIdentifier) => {
       const array = Object.keys(items);
@@ -76,6 +85,37 @@ export const TodoContainer: FunctionComponent = () => {
           [container]: deleteArray,
         };
       });
+    },
+    [items],
+  );
+  const handleUp = useCallback(
+    (
+      id: UniqueIdentifier | undefined,
+      title: string | undefined,
+      date: Date | null | undefined,
+      color: string | undefined,
+    ) => {
+      if (id === undefined || title === undefined || date === undefined || color === undefined) {
+        return;
+      }
+      const array = Object.keys(items);
+      let container = "";
+      for (const x of array) {
+        if (items[x].find((item) => item.id === id)) {
+          container = x;
+          break;
+        }
+      }
+      const updateArray = items[container].map((item) =>
+        item.id === id ? { id: id, title: title, date: date, color: color } : item,
+      );
+      setItems((prevTodos) => {
+        return {
+          ...prevTodos,
+          [container]: updateArray,
+        };
+      });
+      setVisible(false);
     },
     [items],
   );
@@ -181,6 +221,7 @@ export const TodoContainer: FunctionComponent = () => {
 
       const activeContainer = findContainer(id);
       const overContainer = findContainer(overId);
+      console.log(id, activeContainer, overId, overContainer);
 
       if (!activeContainer || !overContainer || activeContainer !== overContainer) {
         return;
@@ -252,9 +293,33 @@ export const TodoContainer: FunctionComponent = () => {
           onDragOver={handleDragOver}
           onDragEnd={handleDragEnd}
         >
-          <TodoList label="Todo" id="todo" items={items.todo} handleDelete={handleDelete} />
-          <TodoList label="Doing" id="doing" items={items.doing} handleDelete={handleDelete} />
-          <TodoList label="Done" id="done" items={items.done} handleDelete={handleDelete} />
+          <TodoList
+            label="Todo"
+            id="todo"
+            items={items.todo}
+            handleDelete={handleDelete}
+            handleUp={handleUp}
+            visible={visible}
+            setVisible={setVisible}
+          />
+          <TodoList
+            label="Doing"
+            id="doing"
+            items={items.doing}
+            handleDelete={handleDelete}
+            handleUp={handleUp}
+            visible={visible}
+            setVisible={setVisible}
+          />
+          <TodoList
+            label="Done"
+            id="done"
+            items={items.done}
+            handleDelete={handleDelete}
+            handleUp={handleUp}
+            visible={visible}
+            setVisible={setVisible}
+          />
           <DragOverlay>
             {activeId ? (
               <TodoItem
@@ -263,6 +328,9 @@ export const TodoContainer: FunctionComponent = () => {
                 date={findId(activeId)?.date}
                 color={findId(activeId)?.color}
                 handleDelete={handleDelete}
+                handleUp={handleUp}
+                visible={visible}
+                setVisible={setVisible}
               />
             ) : null}
           </DragOverlay>
