@@ -1,9 +1,8 @@
+import { UniqueIdentifier } from "@dnd-kit/core";
 import dayjs from "dayjs";
 import { CSSProperties, FC } from "react";
-import { IoTrashOutline } from "react-icons/io5";
 import { AiOutlineEdit } from "react-icons/ai";
-import { UniqueIdentifier } from "@dnd-kit/core";
-import { Update } from "../TodoContainer/TodoContainer";
+import { IoTrashOutline } from "react-icons/io5";
 
 type Props = {
   id: UniqueIdentifier;
