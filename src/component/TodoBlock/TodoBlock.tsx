@@ -3,6 +3,7 @@ import { CSSProperties, FC } from "react";
 import { IoTrashOutline } from "react-icons/io5";
 import { AiOutlineEdit } from "react-icons/ai";
 import { UniqueIdentifier } from "@dnd-kit/core";
+import { Update } from "../TodoContainer/TodoContainer";
 
 type Props = {
   id: UniqueIdentifier;
@@ -10,12 +11,12 @@ type Props = {
   date?: Date | null;
   color?: string;
   handleDelete: (id: UniqueIdentifier) => void;
-  handleVisible: () => void;
+  setVisible: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 /**@package */
 export const TodoBlock: FC<Props> = (props) => {
-  const { id, title, date, color, handleDelete, handleVisible } = props;
+  const { id, title, date, color, handleDelete, setVisible } = props;
   const style: CSSProperties = {
     borderLeft: `5px solid ${color}`,
   };
@@ -37,7 +38,7 @@ export const TodoBlock: FC<Props> = (props) => {
           <button
             data-dndkit-disabled-dnd-flag="true"
             className="text-lg"
-            onClick={() => handleVisible()}
+            onClick={() => setVisible(true)}
           >
             <AiOutlineEdit />
           </button>
