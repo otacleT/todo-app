@@ -1,14 +1,15 @@
-import { UniqueIdentifier } from '@dnd-kit/core';
-import { useSortable } from '@dnd-kit/sortable';
-import { CSS } from '@dnd-kit/utilities';
-import React, { FC } from 'react';
-import { TodoBlock } from '../TodoBlock';
+import { UniqueIdentifier } from "@dnd-kit/core";
+import { useSortable } from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
+import React, { FC } from "react";
+import { TodoBlock } from "../TodoBlock";
 
 type Props = {
   id: UniqueIdentifier;
   title?: string;
   date?: Date | null;
   color?: string;
+  handleDelete: (id: UniqueIdentifier) => void;
 };
 
 /**@package */
@@ -23,8 +24,14 @@ export const TodoItem: FC<Props> = (props) => {
   };
 
   return (
-    <div className='mt-3 first:mt-0' ref={setNodeRef} style={style} {...attributes} {...listeners}>
-      <TodoBlock title={props.title} date={props.date} color={props.color} />
+    <div className="mt-3 first:mt-0" ref={setNodeRef} style={style} {...attributes} {...listeners}>
+      <TodoBlock
+        id={props.id}
+        title={props.title}
+        date={props.date}
+        color={props.color}
+        handleDelete={props.handleDelete}
+      />
     </div>
   );
 };

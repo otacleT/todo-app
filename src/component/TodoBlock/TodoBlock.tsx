@@ -1,21 +1,26 @@
+import { UniqueIdentifier } from "@dnd-kit/core";
 import dayjs from "dayjs";
 import { CSSProperties, FC } from "react";
+import { AiOutlineEdit } from "react-icons/ai";
+import { IoTrashOutline } from "react-icons/io5";
 
 type Props = {
+  id: UniqueIdentifier;
   title?: string;
   date?: Date | null;
   color?: string;
+  handleDelete: (id: UniqueIdentifier) => void;
 };
 
 /**@package */
 export const TodoBlock: FC<Props> = (props) => {
-  const { title, date, color } = props;
+  const { id, title, date, color, handleDelete } = props;
   const style: CSSProperties = {
     borderLeft: `5px solid ${color}`,
   };
 
   return (
-    <button
+    <div
       style={style}
       className="relative text-md font-bold block text-left shadow-lg shadow-black/30 w-full py-2 px-4"
     >
@@ -26,9 +31,29 @@ export const TodoBlock: FC<Props> = (props) => {
           {dayjs(date).format("YYYY-MM-DD")}
         </span>
       ) : null}
-      <span
-        className={`block w-5 h-5 rounded-full bg-cyan-500 absolute right-2 bottom-2`}
-      ></span>
-    </button>
+      <ul className="flex justify-between absolute right-2 bottom-1">
+        <li className="px-1">
+          <button
+            data-dndkit-disabled-dnd-flag="true"
+            className="text-lg"
+            onClick={() => console.log("ok")}
+          >
+            <AiOutlineEdit />
+          </button>
+        </li>
+        <li className="px-1">
+          <button
+            data-dndkit-disabled-dnd-flag="true"
+            className="text-lg"
+            onClick={() => handleDelete(id)}
+          >
+            <IoTrashOutline />
+          </button>
+        </li>
+        <li className="px-1">
+          <span className="block w-5 h-5 rounded-full bg-cyan-500"></span>
+        </li>
+      </ul>
+    </div>
   );
 };

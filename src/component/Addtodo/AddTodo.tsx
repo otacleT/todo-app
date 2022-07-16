@@ -113,9 +113,11 @@ export const AddTodo: FC<TodoInput> = (props) => {
         ]}
         onChange={handleColor}
       />
-      <p className='text-center text-md font-[14px] leading-[34px] border-[#ced4da] border mt-2'>
-        {color}
-      </p>
+      {color ? (
+        <p className='text-center text-md font-[14px] leading-[34px] border-[#ced4da] border mt-2'>
+          {color}
+        </p>
+      ) : null}
       {text != '' && date != null ? (
         <button
           onClick={handleAdd}

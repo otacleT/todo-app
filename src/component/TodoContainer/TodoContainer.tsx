@@ -7,11 +7,11 @@ import {
   UniqueIdentifier,
   useSensors,
   useSensor,
-  PointerSensor,
-  KeyboardSensor,
+  PointerSensor as LibPointerSensor,
+  KeyboardSensor as LibKeyboardSensor,
   DragEndEvent,
-} from '@dnd-kit/core';
-import { arrayMove, sortableKeyboardCoordinates } from '@dnd-kit/sortable';
+} from "@dnd-kit/core";
+import { arrayMove, sortableKeyboardCoordinates } from "@dnd-kit/sortable";
 import {
   collection,
   getDocs,
@@ -21,14 +21,25 @@ import {
   addDoc,
   updateDoc,
   Timestamp,
-} from 'firebase/firestore';
-import React, { useState, useCallback, useEffect, FunctionComponent } from 'react';
-import { AddTodo } from '../Addtodo';
-import { useAuthState } from '../Header/hooks/authentication';
-import { TodoBlock } from '../TodoBlock';
-import { TodoItem } from '../TodoItem';
-import { TodoList } from '../TodoList';
-import { useTasks } from './hooks/getAuthTasks.hooks';
+} from "firebase/firestore";
+import React, { useState, useCallback, useEffect, FunctionComponent } from "react";
+import type { PointerEvent, KeyboardEvent } from "react";
+import { AddTodo } from "../Addtodo";
+import { useAuthState } from "../Header/hooks/authentication";
+import { TodoBlock } from "../TodoBlock";
+import { TodoItem } from "../TodoItem";
+import { TodoList } from "../TodoList";
+import { useTasks } from "./hooks/getAuthTasks.hooks";
+
+// import { arrayMove, sortableKeyboardCoordinates } from "@dnd-kit/sortable";
+// import React, { useState, useCallback, useEffect, FunctionComponent } from "react";
+// import type { PointerEvent, KeyboardEvent } from "react";
+// import { AddTodo } from "../Addtodo";
+// import { TodoBlock } from "../TodoBlock";
+// import { TodoItem } from "../TodoItem";
+// import { TodoList } from "../TodoList";
+// import { useTasks } from "./hooks/getAuthTasks.hooks";
+// import { useAuthState } from "src/component/Header/hooks/authentication";
 
 type Props = {
   [key: string]: {
@@ -70,11 +81,25 @@ export const TodoContainer: FunctionComponent = () => {
     });
   }, [isLoading, todos, doings, dones]);
 
-  const sensors = useSensors(
-    useSensor(PointerSensor),
-    useSensor(KeyboardSensor, {
-      coordinateGetter: sortableKeyboardCoordinates,
-    }),
+  const handleDelete = useCallback(
+    (id: UniqueIdentifier) => {
+      const array = Object.keys(items);
+      let container = "";
+      for (const x of array) {
+        if (items[x].find((item) => item.id === id)) {
+          container = x;
+          break;
+        }
+      }
+      const deleteArray = items[container].filter((item) => item.id !== id);
+      setItems((prevTodos) => {
+        return {
+          ...prevTodos,
+          [container]: deleteArray,
+        };
+      });
+    },
+    [items],
   );
   const findId = useCallback(
     (id: UniqueIdentifier): Item => {
@@ -201,11 +226,53 @@ export const TodoContainer: FunctionComponent = () => {
     },
     [items, findContainer, userId],
   );
+  // data-dndkit-disabled-dnd-flag="true" が指定されている要素はドラッグ無効にする
+  function shouldHandleEvent(element: HTMLElement | null) {
+    let cur = element;
 
+    while (cur) {
+      if (cur.dataset && cur.dataset.dndkitDisabledDndFlag) {
+        return false;
+      }
+      cur = cur.parentElement;
+    }
+
+    return true;
+  }
+
+  // LibMouseSensor を override してドラッグ無効にする
+  class PointerSensor extends LibPointerSensor {
+    static activators = [
+      {
+        eventName: "onPointerDown" as const,
+        handler: ({ nativeEvent: event }: PointerEvent): boolean => {
+          return shouldHandleEvent(event.target as HTMLElement);
+        },
+      },
+    ];
+  }
+
+  // LibKeyboardSensor を override してドラッグ無効にする
+  class KeyboardSensor extends LibKeyboardSensor {
+    static activators = [
+      {
+        eventName: "onKeyDown" as const,
+        handler: ({ nativeEvent: event }: KeyboardEvent<Element>): boolean => {
+          return shouldHandleEvent(event.target as HTMLElement);
+        },
+      },
+    ];
+  }
+  const sensors = useSensors(
+    useSensor(PointerSensor),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
+    }),
+  );
   return (
-    <div className='flex justify-between max-w-6xl mx-auto px-3 mt-10'>
+    <div className="flex justify-between max-w-6xl mx-auto px-3 mt-10">
       <AddTodo setItems={setItems} />
-      <div className='flex justify-between w-[calc(80%-20px)] border-2 border-black rounded-xl py-1 px-[9px]'>
+      <div className="flex justify-between w-[calc(80%-20px)] border-2 border-black rounded-xl py-1 px-[9px]">
         <DndContext
           sensors={sensors}
           collisionDetection={closestCorners}
@@ -213,9 +280,9 @@ export const TodoContainer: FunctionComponent = () => {
           onDragOver={handleDragOver}
           onDragEnd={handleDragEnd}
         >
-          <TodoList label='Todo' id='todo' items={items.todo} />
-          <TodoList label='Doing' id='doing' items={items.doing} />
-          <TodoList label='Done' id='done' items={items.done} />
+          <TodoList label="Todo" id="todo" items={items.todo} handleDelete={handleDelete} />
+          <TodoList label="Doing" id="doing" items={items.doing} handleDelete={handleDelete} />
+          <TodoList label="Done" id="done" items={items.done} handleDelete={handleDelete} />
           <DragOverlay>
             {activeId ? (
               <TodoItem
@@ -223,6 +290,7 @@ export const TodoContainer: FunctionComponent = () => {
                 title={findId(activeId)?.title}
                 date={findId(activeId)?.date}
                 color={findId(activeId)?.color}
+                handleDelete={handleDelete}
               />
             ) : null}
           </DragOverlay>
