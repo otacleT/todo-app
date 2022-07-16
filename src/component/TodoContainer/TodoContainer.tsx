@@ -47,6 +47,7 @@ type Item =
       color: string;
     }
   | undefined;
+
 export type Update = {
   id: UniqueIdentifier;
   title: string | undefined;

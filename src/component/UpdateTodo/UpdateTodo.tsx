@@ -6,11 +6,11 @@ import { UniqueIdentifier } from "@dnd-kit/core";
 
 type Props = {
   visible: boolean;
-  setVisible: React.Dispatch<React.SetStateAction<boolean>>;
   id: UniqueIdentifier | undefined;
   title: string | undefined;
   date: Date | null | undefined;
   color: string | undefined;
+  setVisible: React.Dispatch<React.SetStateAction<boolean>>;
   handleText: React.ChangeEventHandler<HTMLInputElement>;
   handleDate: (e: Date) => void;
   handleColor: (e: string) => void;

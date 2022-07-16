@@ -11,6 +11,8 @@ type Props = {
   title?: string;
   date?: Date | null;
   color?: string;
+  visible: boolean;
+  setVisible: React.Dispatch<React.SetStateAction<boolean>>;
   handleDelete: (id: UniqueIdentifier) => void;
   handleUp: (
     id: UniqueIdentifier | undefined,
@@ -18,8 +20,6 @@ type Props = {
     date: Date | null | undefined,
     color: string | undefined,
   ) => void;
-  visible: boolean;
-  setVisible: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 /**@package */
