@@ -5,16 +5,15 @@ import { IoCloseOutline } from "react-icons/io5";
 import { UniqueIdentifier } from "@dnd-kit/core";
 
 type Props = {
-  visible: boolean;
   id: UniqueIdentifier | undefined;
   title: string | undefined;
   date: Date | null | undefined;
   color: string | undefined;
-  setVisible: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsShow: React.Dispatch<React.SetStateAction<boolean>>;
   handleText: React.ChangeEventHandler<HTMLInputElement>;
   handleDate: (e: Date) => void;
   handleColor: (e: string) => void;
-  handleUp: (
+  handleChange: (
     id: UniqueIdentifier | undefined,
     title: string | undefined,
     date: Date | null | undefined,
@@ -23,27 +22,17 @@ type Props = {
 };
 
 export const UpdateTodo: FC<Props> = (props) => {
-  const {
-    visible,
-    setVisible,
-    id,
-    title,
-    date,
-    color,
-    handleText,
-    handleDate,
-    handleColor,
-    handleUp,
-  } = props;
+  const { setIsShow, id, title, date, color, handleText, handleDate, handleColor, handleChange } =
+    props;
   return (
     <>
       <div
-        onClick={() => setVisible(!visible)}
-        className="w-full h-full fixed top-0 left-0 bg-black/30"
+        onClick={() => setIsShow(false)}
+        className="w-full h-full fixed top-0 left-0 bg-black/30 z-40"
       ></div>
-      <div className="w-2/3 max-w-[400px] shadow-lg shadow-black/30 fixed top-1/2 left-1/2 translate-x-[-50%] translate-y-[-50%] bg-white px-3 pt-6 pb-3 rounded-sm">
+      <div className="w-2/3 max-w-[400px] shadow-lg shadow-black/30 fixed top-1/2 left-1/2 translate-x-[-50%] translate-y-[-50%] bg-white px-3 pt-6 pb-3 rounded-sm z-50">
         <span
-          onClick={() => setVisible(!visible)}
+          onClick={() => setIsShow(false)}
           className="text-2xl absolute right-2 top-2 cursor-pointer"
         >
           <IoCloseOutline />
@@ -85,6 +74,7 @@ export const UpdateTodo: FC<Props> = (props) => {
             "#fab005",
             "#fd7e14",
           ]}
+          value={color}
           onChange={handleColor}
         />
         {color ? (
@@ -94,7 +84,7 @@ export const UpdateTodo: FC<Props> = (props) => {
         ) : null}
         <button
           className="w-full mt-5 h-10 flex items-center justify-center text-md font-bold rounded-full text-white bg-black"
-          onClick={() => handleUp(id, title, date, color)}
+          onClick={() => handleChange(id, title, date, color)}
         >
           変更する
         </button>
