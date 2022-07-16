@@ -1,9 +1,7 @@
 import { UniqueIdentifier } from "@dnd-kit/core";
-import { ColorPicker } from "@mantine/core";
-import { DatePicker } from "@mantine/dates";
 import { getFirestore, doc, setDoc, Timestamp } from "firebase/firestore";
 import { ChangeEventHandler, FC, useCallback, useState } from "react";
-import { ColorPick } from "../ColorPicker";
+import { ColorPick } from "../ColorPick";
 import { DatePick } from "../DatePick";
 import { useAuthState } from "../Header/hooks/authentication";
 import { InputTitle } from "../InputTitle";
@@ -28,7 +26,7 @@ export const AddTodo: FC<TodoInput> = (props) => {
   const defaultTime = new Date();
   const [text, setText] = useState<string>("");
   const [date, setDate] = useState<Date>(defaultTime);
-  const [color, setColor] = useState<string | null>("");
+  const [color, setColor] = useState<string>("");
   const { userId } = useAuthState();
 
   const handleInput: ChangeEventHandler<HTMLInputElement> = (e) => {
@@ -55,7 +53,7 @@ export const AddTodo: FC<TodoInput> = (props) => {
             id: curretTaskId,
             title: text,
             date: date,
-            color: "#ffffff",
+            color: color,
           },
         ],
       };
@@ -63,7 +61,7 @@ export const AddTodo: FC<TodoInput> = (props) => {
     });
     setText("");
     setDate(defaultTime);
-    setColor(null);
+    setColor("");
   }, [text, date, color]);
 
   const handleColor = useCallback((e: string) => {
