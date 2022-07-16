@@ -10,12 +10,12 @@ type Props = {
   date?: Date | null;
   color?: string;
   handleDelete: (id: UniqueIdentifier) => void;
-  setVisible: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsShow: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 /**@package */
 export const TodoBlock: FC<Props> = (props) => {
-  const { id, title, date, color, handleDelete, setVisible } = props;
+  const { id, title, date, color, handleDelete, setIsShow } = props;
   const style: CSSProperties = {
     borderLeft: `5px solid ${color}`,
   };
@@ -37,7 +37,7 @@ export const TodoBlock: FC<Props> = (props) => {
           <button
             data-dndkit-disabled-dnd-flag="true"
             className="text-lg"
-            onClick={() => setVisible(true)}
+            onClick={() => setIsShow(true)}
           >
             <AiOutlineEdit />
           </button>
