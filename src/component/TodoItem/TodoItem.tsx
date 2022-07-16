@@ -11,8 +11,6 @@ type Props = {
   title?: string;
   date?: Date | null;
   color?: string;
-  visible: boolean;
-  setVisible: React.Dispatch<React.SetStateAction<boolean>>;
   handleDelete: (id: UniqueIdentifier) => void;
   handleUp: (
     id: UniqueIdentifier | undefined,
@@ -24,10 +22,9 @@ type Props = {
 
 /**@package */
 export const TodoItem: FC<Props> = (props) => {
-  const { id, title, date, color, handleDelete, handleUp, visible, setVisible } = props;
-  const [text, setText] = useState<string | undefined>();
-  const [beforeDate, setBeforeDate] = useState<Date | null | undefined>();
-  const [beforeColor, setBeforeColor] = useState<string | undefined>();
+  const { id, title, date, color, handleDelete, handleUp } = props;
+  const [before, setBefore] = useState<Update>({ id, title, date, color });
+  const [isShow, setIsShow] = useState<boolean>(false);
   const { attributes, listeners, setNodeRef, transform, transition } = useSortable({
     id: props.id,
   });
@@ -38,47 +35,69 @@ export const TodoItem: FC<Props> = (props) => {
   };
   const handleText: ChangeEventHandler<HTMLInputElement> = useCallback(
     (e) => {
-      setText(e.target.value);
+      setBefore((prevBefore) => {
+        return { ...prevBefore, title: e.target.value };
+      });
     },
 
-    [text],
+    [before],
   );
-  const handleDate = useCallback((e: Date) => {
-    setBeforeDate(e);
-  }, []);
-  const handleColor = useCallback((e: string) => {
-    setBeforeColor(e);
-  }, []);
+  const handleDate = useCallback(
+    (e: Date) => {
+      setBefore((prevBefore) => {
+        return { ...prevBefore, date: e };
+      });
+    },
+    [before],
+  );
+  const handleColor = useCallback(
+    (e: string) => {
+      setBefore((prevBefore) => {
+        return { ...prevBefore, color: e };
+      });
+    },
+    [before],
+  );
+  const handleChange = useCallback(
+    (
+      id: UniqueIdentifier | undefined,
+      title: string | undefined,
+      date: Date | null | undefined,
+      color: string | undefined,
+    ) => {
+      handleUp(id, title, date, color);
+      setIsShow(false);
+    },
+    [isShow],
+  );
 
   useEffect(() => {
-    setText(title);
-    setBeforeDate(date);
-    setBeforeColor(color);
+    setBefore({ id: id, title: title, date: date, color: color });
   }, []);
+
   return (
     <div className="mt-3 first:mt-0">
       <div ref={setNodeRef} style={style} {...attributes} {...listeners}>
         <TodoBlock
-          id={id}
-          title={text}
-          date={beforeDate}
-          color={beforeColor}
+          id={before.id}
+          title={before.title}
+          date={before.date}
+          color={before.color}
           handleDelete={handleDelete}
-          setVisible={setVisible}
+          setIsShow={setIsShow}
         />
       </div>
-      {visible ? (
+      {isShow ? (
         <UpdateTodo
-          visible={visible}
-          setVisible={setVisible}
-          id={id}
-          title={text}
-          date={beforeDate}
-          color={beforeColor}
+          setIsShow={setIsShow}
+          id={before.id}
+          title={before.title}
+          date={before.date}
+          color={before.color}
+          handleChange={handleChange}
           handleText={handleText}
           handleDate={handleDate}
           handleColor={handleColor}
-          handleUp={handleUp}
         />
       ) : null}
     </div>
