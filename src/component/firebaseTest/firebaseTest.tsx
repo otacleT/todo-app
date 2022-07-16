@@ -8,6 +8,7 @@ import {
   FieldValue,
   doc,
   addDoc,
+  updateDoc,
   Timestamp,
 } from 'firebase/firestore';
 import { FunctionComponent, useState, useEffect, useCallback } from 'react';
@@ -32,6 +33,20 @@ export const FirebaseTest: FunctionComponent = () => {
       color: '#3cb371',
       status: 'Todo',
       date: convertTimeStamp,
+    });
+  }, [userId]);
+
+  const handleUpdate = useCallback(async () => {
+    const db = getFirestore();
+    const testId = '9454507';
+    const docRef = doc(db, `users/${userId}/tasks`, testId);
+
+    const testTime = new Date('2017/03/02 01:23:45');
+
+    const convertTimeStamp = Timestamp.fromDate(testTime);
+    console.log('たかはし');
+    await updateDoc(docRef, {
+      status: 'Doing',
     });
   }, [userId]);
 
@@ -70,6 +85,12 @@ export const FirebaseTest: FunctionComponent = () => {
         onClick={handleSubmit}
       >
         登録
+      </button>
+      <button
+        className='shadow-lg bg-emerald-500 shadow-emerald-500/50 text-white rounded px-2 py-1'
+        onClick={handleUpdate}
+      >
+        アプデ
       </button>
     </>
   );

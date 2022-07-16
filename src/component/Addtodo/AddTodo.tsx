@@ -39,7 +39,7 @@ export const AddTodo: FC<TodoInput> = (props) => {
     await setDoc(docRef, {
       title: text,
       color: color,
-      status: 'Doing',
+      status: 'todo',
       date: convertTimeStamp,
     });
 

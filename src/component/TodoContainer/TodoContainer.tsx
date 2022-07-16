@@ -12,8 +12,19 @@ import {
   DragEndEvent,
 } from '@dnd-kit/core';
 import { arrayMove, sortableKeyboardCoordinates } from '@dnd-kit/sortable';
+import {
+  collection,
+  getDocs,
+  getFirestore,
+  FieldValue,
+  doc,
+  addDoc,
+  updateDoc,
+  Timestamp,
+} from 'firebase/firestore';
 import React, { useState, useCallback, useEffect, FunctionComponent } from 'react';
 import { AddTodo } from '../Addtodo';
+import { useAuthState } from '../Header/hooks/authentication';
 import { TodoBlock } from '../TodoBlock';
 import { TodoItem } from '../TodoItem';
 import { TodoList } from '../TodoList';
@@ -40,6 +51,7 @@ type Item =
 export const TodoContainer: FunctionComponent = () => {
   const [activeId, setActiveId] = useState<UniqueIdentifier | null>();
   const { isLoading, todos, doings, dones } = useTasks();
+  const { userId } = useAuthState();
 
   const [items, setItems] = useState<Props>({
     todo: [],
@@ -156,9 +168,11 @@ export const TodoContainer: FunctionComponent = () => {
     [items],
   );
   const handleDragEnd = useCallback(
-    (event: DragEndEvent) => {
+    async (event: DragEndEvent) => {
       const { active, over } = event;
       const { id } = active;
+      const db = getFirestore();
+      const docRef = doc(db, `users/${userId}/tasks`, id.toString());
       if (!over) {
         return;
       }
@@ -179,9 +193,13 @@ export const TodoContainer: FunctionComponent = () => {
           [overContainer]: arrayMove(items[overContainer], activeIndex, overIndex),
         }));
       }
+
+      await updateDoc(docRef, {
+        status: activeContainer.toString(),
+      });
       setActiveId(null);
     },
-    [items],
+    [items, findContainer, userId],
   );
 
   return (

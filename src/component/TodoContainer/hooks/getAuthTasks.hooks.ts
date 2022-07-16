@@ -29,10 +29,10 @@ export function useTasks(): UseTasksOutput {
       const dones = new Array<Task>();
 
       tasks.forEach((task) => {
-        if (task.status === 'Todo') {
+        if (task.status === 'todo') {
           task.date = task.date.toDate();
           todos.push(task);
-        } else if (task.status === 'Doing') {
+        } else if (task.status === 'doing') {
           task.date = task.date.toDate();
           doings.push(task);
         } else {
