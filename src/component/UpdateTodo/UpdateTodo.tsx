@@ -39,7 +39,7 @@ export const UpdateTodo: FC<Props> = (props) => {
     <>
       <div
         onClick={() => setVisible(!visible)}
-        className="w-full h-full fixed top-0 left-0 bg-black/30"
+        className="w-full h-full fixed top-0 left-0 bg-black/10"
       ></div>
       <div className="w-2/3 max-w-[400px] shadow-lg shadow-black/30 fixed top-1/2 left-1/2 translate-x-[-50%] translate-y-[-50%] bg-white px-3 pt-6 pb-3 rounded-sm">
         <span
