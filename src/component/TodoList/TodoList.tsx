@@ -1,22 +1,17 @@
 import { UniqueIdentifier, useDroppable } from "@dnd-kit/core";
 import { SortableContext, verticalListSortingStrategy } from "@dnd-kit/sortable";
-import { ColorPicker } from "@mantine/core";
-import { DatePicker } from "@mantine/dates";
-import React, { FC, useCallback, useState } from "react";
-import { Update } from "../TodoContainer/TodoContainer";
+import React, { FC } from "react";
 import { TodoItem } from "../TodoItem";
 
 type Props = {
   id: string;
   label: string;
-  visible: boolean;
   items: {
     id: UniqueIdentifier;
     title: string;
     date: Date | null;
     color: string;
   }[];
-  setVisible: React.Dispatch<React.SetStateAction<boolean>>;
   handleDelete: (id: UniqueIdentifier) => void;
   handleUp: (
     id: UniqueIdentifier | undefined,
@@ -28,7 +23,7 @@ type Props = {
 
 /**@package */
 export const TodoList: FC<Props> = (props) => {
-  const { id, label, items, handleDelete, handleUp, visible, setVisible } = props;
+  const { id, label, items, handleDelete, handleUp } = props;
   const { setNodeRef } = useDroppable({
     id,
   });
@@ -46,8 +41,6 @@ export const TodoList: FC<Props> = (props) => {
               color={item.color}
               handleDelete={handleDelete}
               handleUp={handleUp}
-              visible={visible}
-              setVisible={setVisible}
             />
           ))}
         </div>
