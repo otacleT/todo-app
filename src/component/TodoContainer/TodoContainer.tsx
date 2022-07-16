@@ -12,16 +12,7 @@ import {
   DragEndEvent,
 } from "@dnd-kit/core";
 import { arrayMove, sortableKeyboardCoordinates } from "@dnd-kit/sortable";
-import {
-  collection,
-  getDocs,
-  getFirestore,
-  FieldValue,
-  doc,
-  addDoc,
-  updateDoc,
-  Timestamp,
-} from "firebase/firestore";
+import { getFirestore, doc, updateDoc } from "firebase/firestore";
 import React, { useState, useCallback, useEffect, FunctionComponent } from "react";
 import type { PointerEvent, KeyboardEvent } from "react";
 import { AddTodo } from "../Addtodo";
@@ -29,7 +20,6 @@ import { TodoItem } from "../TodoItem";
 import { TodoList } from "../TodoList";
 import { useTasks } from "./hooks/getAuthTasks.hooks";
 import { useAuthState } from "src/component/Header/hooks/authentication";
-import { UpdateTodo } from "../UpdateTodo";
 
 type Props = {
   [key: string]: {
@@ -78,7 +68,7 @@ export const TodoContainer: FunctionComponent = () => {
   }, [isLoading, todos, doings, dones]);
 
   const handleDelete = useCallback(
-    (id: UniqueIdentifier) => {
+    (id: UniqueIdentifier | undefined) => {
       const array = Object.keys(items);
       let container = "";
       for (const x of array) {

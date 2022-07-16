@@ -11,7 +11,7 @@ type Props = {
   title?: string;
   date?: Date | null;
   color?: string;
-  handleDelete: (id: UniqueIdentifier) => void;
+  handleDelete: (id: UniqueIdentifier | undefined) => void;
   handleUp: (
     id: UniqueIdentifier | undefined,
     title: string | undefined,

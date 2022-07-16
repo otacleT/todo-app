@@ -1,9 +1,10 @@
 import { UniqueIdentifier } from "@dnd-kit/core";
-import { ColorPicker } from "@mantine/core";
-import { DatePicker } from "@mantine/dates";
-import { getFirestore, FieldValue, doc, addDoc, setDoc, Timestamp } from "firebase/firestore";
+import { getFirestore, doc, setDoc, Timestamp } from "firebase/firestore";
 import { ChangeEventHandler, FC, useCallback, useState } from "react";
+import { ColorPick } from "../ColorPick";
+import { DatePick } from "../DatePick";
 import { useAuthState } from "../Header/hooks/authentication";
+import { InputTitle } from "../InputTitle";
 
 type Props = {
   [key: string]: {
@@ -25,7 +26,7 @@ export const AddTodo: FC<TodoInput> = (props) => {
   const defaultTime = new Date();
   const [text, setText] = useState<string>("");
   const [date, setDate] = useState<Date>(defaultTime);
-  const [color, setColor] = useState<string | null>("");
+  const [color, setColor] = useState<string>("");
   const { userId } = useAuthState();
 
   const handleInput: ChangeEventHandler<HTMLInputElement> = (e) => {
@@ -42,7 +43,6 @@ export const AddTodo: FC<TodoInput> = (props) => {
       status: "todo",
       date: convertTimeStamp,
     });
-
     setItems((prevItems) => {
       const { todo } = prevItems;
       const newItems = {
@@ -53,7 +53,7 @@ export const AddTodo: FC<TodoInput> = (props) => {
             id: curretTaskId,
             title: text,
             date: date,
-            color: "#ffffff",
+            color: color,
           },
         ],
       };
@@ -61,7 +61,7 @@ export const AddTodo: FC<TodoInput> = (props) => {
     });
     setText("");
     setDate(defaultTime);
-    setColor(null);
+    setColor("");
   }, [text, date, color]);
 
   const handleColor = useCallback((e: string) => {
@@ -74,50 +74,9 @@ export const AddTodo: FC<TodoInput> = (props) => {
   return (
     <div className="w-[20%]">
       <h3 className="text-xl font-bold text-center">Todoリストを追加</h3>
-      <p className="text-[14px] font-bold">
-        title<span className="text-rose-500">*</span>
-      </p>
-      <input
-        className="w-full border border-[#ced4da] leading-[34px] px-[12px] rounded-sm text-[14px]"
-        value={text}
-        onChange={handleInput}
-        type="text"
-        placeholder="勉強する"
-      />
-      <p className="text-[14px] font-bold mt-3">
-        date<span className="text-rose-500">*</span>
-      </p>
-      <DatePicker
-        classNames={{ input: "rounded-none" }}
-        placeholder="日付を選択"
-        inputFormat="YYYY-MM-DD"
-        onChange={handleDate}
-        clearable={true}
-        value={date}
-        required
-      />
-      <p className="text-[14px] font-bold mt-3">color</p>
-      <ColorPicker
-        format="hex"
-        swatches={[
-          "#fa5252",
-          "#e64980",
-          "#be4bdb",
-          "#7950f2",
-          "#4c6ef5",
-          "#228be6",
-          "#15aabf",
-          "#82c91e",
-          "#fab005",
-          "#fd7e14",
-        ]}
-        onChange={handleColor}
-      />
-      {color ? (
-        <p className="text-center text-md font-[14px] leading-[34px] border-[#ced4da] border mt-2">
-          {color}
-        </p>
-      ) : null}
+      <InputTitle text={text} handleInput={handleInput} />
+      <DatePick date={date} handleDate={handleDate} />
+      <ColorPick color={color} handleColor={handleColor} />
       {text != "" && date != null ? (
         <button
           onClick={handleAdd}
