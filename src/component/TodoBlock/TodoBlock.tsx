@@ -6,9 +6,9 @@ import { IoTrashOutline } from "react-icons/io5";
 
 type Props = {
   id: UniqueIdentifier;
-  title?: string;
-  date?: Date | null;
-  color?: string;
+  title: string;
+  date: Date | null;
+  color: string;
   handleDelete: (id: UniqueIdentifier) => void;
   setIsShow: React.Dispatch<React.SetStateAction<boolean>>;
 };
@@ -23,37 +23,36 @@ export const TodoBlock: FC<Props> = (props) => {
   return (
     <div
       style={style}
-      className="relative text-md font-bold block text-left shadow-lg shadow-black/30 w-full py-2 px-4"
+      className="relative text-md font-bold block text-left shadow-lg shadow-black/30 w-full py-3 px-4"
     >
       {title}
-      <br />
-      {date ? (
-        <span className="text-sm font-bold text-gray border-t-2 text-gray-500 border-gray-500 mt-3 inline-block">
+      <ul className="flex justify-between border-gray-500 border-t-2 mt-2 pt-2">
+        <li className="text-sm font-bold text-gray text-gray-500 inline-block">
           {dayjs(date).format("YYYY-MM-DD")}
-        </span>
-      ) : null}
-      <ul className="flex justify-between absolute right-2 bottom-1">
-        <li className="px-1">
-          <button
-            data-dndkit-disabled-dnd-flag="true"
-            className="text-lg"
-            onClick={() => setIsShow(true)}
-          >
-            <AiOutlineEdit />
-          </button>
         </li>
-        <li className="px-1">
-          <button
-            data-dndkit-disabled-dnd-flag="true"
-            className="text-lg"
-            onClick={() => handleDelete(id)}
-          >
-            <IoTrashOutline />
-          </button>
-        </li>
-        <li className="px-1">
-          <span className="block w-5 h-5 rounded-full bg-cyan-500"></span>
-        </li>
+        <ul className="flex justify-between">
+          <li className="px-1">
+            <button
+              data-dndkit-disabled-dnd-flag="true"
+              className="text-lg"
+              onClick={() => setIsShow(true)}
+            >
+              <AiOutlineEdit />
+            </button>
+          </li>
+          <li className="px-1">
+            <button
+              data-dndkit-disabled-dnd-flag="true"
+              className="text-lg"
+              onClick={() => handleDelete(id)}
+            >
+              <IoTrashOutline />
+            </button>
+          </li>
+          <li className="px-1">
+            <span className="block w-5 h-5 rounded-full bg-cyan-500"></span>
+          </li>
+        </ul>
       </ul>
     </div>
   );
