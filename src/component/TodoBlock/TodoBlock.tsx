@@ -34,6 +34,7 @@ export const TodoBlock: FC<Props> = (props) => {
   };
 
   const handleDeadline = useCallback(() => {
+    if (label == "Done") return;
     const now = new Date();
     const cnt = Math.round((Number(date) - Number(now)) / 1000 / 60 / 60 / 24);
     switch (true) {
@@ -51,7 +52,6 @@ export const TodoBlock: FC<Props> = (props) => {
   }, [date, deadline]);
 
   const handleIcon = useCallback((dl: string) => {
-    if (label == "done") return;
     switch (dl) {
       case "smile":
         return (
@@ -107,17 +107,6 @@ export const TodoBlock: FC<Props> = (props) => {
               <AiOutlineEdit />
             </button>
           </li>
-          {id && (
-            <li className="px-1">
-              <button
-                data-dndkit-disabled-dnd-flag="true"
-                className="text-lg"
-                onClick={() => handleDelete(id)}
-              >
-                <IoTrashOutline />
-              </button>
-            </li>
-          )}
           <li className="px-1">
             <button
               data-dndkit-disabled-dnd-flag="true"
