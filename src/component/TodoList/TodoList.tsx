@@ -41,6 +41,7 @@ export const TodoList: FC<Props> = (props) => {
               color={item.color}
               handleDelete={handleDelete}
               handleUp={handleUp}
+              label={label}
             />
           ))}
         </div>
