@@ -1,6 +1,7 @@
 import { UniqueIdentifier } from "@dnd-kit/core";
+import clsx from "clsx";
 import dayjs from "dayjs";
-import { CSSProperties, FC } from "react";
+import { CSSProperties, FC, useEffect, useState } from "react";
 import { AiOutlineEdit } from "react-icons/ai";
 import { IoTrashOutline } from "react-icons/io5";
 
@@ -16,9 +17,24 @@ type Props = {
 /**@package */
 export const TodoBlock: FC<Props> = (props) => {
   const { id, title, date, color, handleDelete, setIsShow } = props;
+  const [currentTimeLimitColor, setCurrentTimeLimitColor] = useState<string>("");
   const style: CSSProperties = {
     borderLeft: `5px solid ${color}`,
   };
+
+  useEffect(() => {
+    const now = new Date().getTime();
+    if (date) {
+      const remain = Math.floor((date.getTime() - now) / (24 * 60 * 60 * 1000)) + 1;
+      if (remain <= 1) {
+        setCurrentTimeLimitColor("bg-red-500");
+      } else if (1 < remain && remain <= 3) {
+        setCurrentTimeLimitColor("bg-yellow-400");
+      } else {
+        setCurrentTimeLimitColor("bg-green-400");
+      }
+    }
+  }, []);
 
   return (
     <div
@@ -52,7 +68,7 @@ export const TodoBlock: FC<Props> = (props) => {
             </li>
           )}
           <li className="px-1">
-            <span className="block w-5 h-5 rounded-full bg-cyan-500"></span>
+            <span className={clsx("block w-5 h-5 rounded-full", currentTimeLimitColor)}></span>
           </li>
         </ul>
       </ul>
