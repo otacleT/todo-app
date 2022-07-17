@@ -9,7 +9,7 @@ type Props = {
   title: string | undefined;
   date: Date | null | undefined;
   color: string | undefined;
-  handleDelete: (id: UniqueIdentifier | undefined) => void;
+  handleDelete: (id: UniqueIdentifier) => void;
   setIsShow: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
@@ -40,15 +40,17 @@ export const TodoBlock: FC<Props> = (props) => {
               <AiOutlineEdit />
             </button>
           </li>
-          <li className="px-1">
-            <button
-              data-dndkit-disabled-dnd-flag="true"
-              className="text-lg"
-              onClick={() => handleDelete(id)}
-            >
-              <IoTrashOutline />
-            </button>
-          </li>
+          {id && (
+            <li className="px-1">
+              <button
+                data-dndkit-disabled-dnd-flag="true"
+                className="text-lg"
+                onClick={() => handleDelete(id)}
+              >
+                <IoTrashOutline />
+              </button>
+            </li>
+          )}
           <li className="px-1">
             <span className="block w-5 h-5 rounded-full bg-cyan-500"></span>
           </li>

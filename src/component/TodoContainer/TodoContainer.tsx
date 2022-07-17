@@ -12,7 +12,7 @@ import {
   DragEndEvent,
 } from "@dnd-kit/core";
 import { arrayMove, sortableKeyboardCoordinates } from "@dnd-kit/sortable";
-import { getFirestore, doc, updateDoc } from "firebase/firestore";
+import { getFirestore, doc, updateDoc, deleteDoc } from "firebase/firestore";
 import React, { useState, useCallback, useEffect, FunctionComponent } from "react";
 import type { PointerEvent, KeyboardEvent } from "react";
 import { AddTodo } from "../Addtodo";
@@ -50,6 +50,7 @@ export const TodoContainer: FunctionComponent = () => {
   const [activeId, setActiveId] = useState<UniqueIdentifier | null>();
   const { isLoading, todos, doings, dones } = useTasks();
   const { userId } = useAuthState();
+  const db = getFirestore();
   const [items, setItems] = useState<Props>({
     todo: [],
     doing: [],
@@ -68,8 +69,9 @@ export const TodoContainer: FunctionComponent = () => {
   }, [isLoading, todos, doings, dones]);
 
   const handleDelete = useCallback(
-    (id: UniqueIdentifier | undefined) => {
+    async (id: UniqueIdentifier) => {
       const array = Object.keys(items);
+      const docRef = doc(db, `users/${userId}/tasks`, id.toString());
       let container = "";
       for (const x of array) {
         if (items[x].find((item) => item.id === id)) {
@@ -84,6 +86,7 @@ export const TodoContainer: FunctionComponent = () => {
           [container]: deleteArray,
         };
       });
+      await deleteDoc(docRef);
     },
     [items],
   );
@@ -212,7 +215,6 @@ export const TodoContainer: FunctionComponent = () => {
     async (event: DragEndEvent) => {
       const { active, over } = event;
       const { id } = active;
-      const db = getFirestore();
       const docRef = doc(db, `users/${userId}/tasks`, id.toString());
       if (!over) {
         return;
