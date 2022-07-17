@@ -18,11 +18,12 @@ type Props = {
     date: Date | null | undefined,
     color: string | undefined,
   ) => void;
+  label?: string;
 };
 
 /**@package */
 export const TodoItem: FC<Props> = (props) => {
-  const { id, title, date, color, handleDelete, handleUp } = props;
+  const { id, title, date, color, handleDelete, handleUp, label } = props;
   const [before, setBefore] = useState<Update>({ id, title, date, color });
   const [isShow, setIsShow] = useState<boolean>(false);
   const { attributes, listeners, setNodeRef, transform, transition } = useSortable({
@@ -85,6 +86,7 @@ export const TodoItem: FC<Props> = (props) => {
           color={before.color}
           handleDelete={handleDelete}
           setIsShow={setIsShow}
+          label={label}
         />
       </div>
       {isShow ? (

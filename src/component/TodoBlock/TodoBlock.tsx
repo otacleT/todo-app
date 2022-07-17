@@ -12,11 +12,12 @@ type Props = {
   color: string | undefined;
   handleDelete: (id: UniqueIdentifier) => void;
   setIsShow: React.Dispatch<React.SetStateAction<boolean>>;
+  label?: string;
 };
 
 /**@package */
 export const TodoBlock: FC<Props> = (props) => {
-  const { id, title, date, color, handleDelete, setIsShow } = props;
+  const { id, title, date, color, handleDelete, setIsShow, label } = props;
   const [currentTimeLimitColor, setCurrentTimeLimitColor] = useState<string>("");
   const style: CSSProperties = {
     borderLeft: `5px solid ${color}`,
@@ -34,7 +35,7 @@ export const TodoBlock: FC<Props> = (props) => {
         setCurrentTimeLimitColor("bg-green-400");
       }
     }
-  }, []);
+  }, [date]);
 
   return (
     <div
@@ -42,6 +43,7 @@ export const TodoBlock: FC<Props> = (props) => {
       className="relative text-md font-bold block text-left shadow-lg shadow-black/30 w-full py-3 px-4"
     >
       {title}
+      {label}
       <ul className="flex justify-between border-gray-500 border-t-2 mt-2 pt-2">
         <li className="text-sm font-bold text-gray text-gray-500 inline-block">
           {dayjs(date).format("YYYY-MM-DD")}
@@ -68,7 +70,9 @@ export const TodoBlock: FC<Props> = (props) => {
             </li>
           )}
           <li className="px-1">
-            <span className={clsx("block w-5 h-5 rounded-full", currentTimeLimitColor)}></span>
+            {label !== "Done" && (
+              <span className={clsx("block w-5 h-5 rounded-full", currentTimeLimitColor)}></span>
+            )}
           </li>
         </ul>
       </ul>
