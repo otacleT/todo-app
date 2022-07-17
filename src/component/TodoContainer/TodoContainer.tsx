@@ -91,7 +91,7 @@ export const TodoContainer: FunctionComponent = () => {
     [items],
   );
   const handleUp = useCallback(
-    (
+    async (
       id: UniqueIdentifier | undefined,
       title: string | undefined,
       date: Date | null | undefined,
@@ -111,11 +111,20 @@ export const TodoContainer: FunctionComponent = () => {
       const updateArray = items[container].map((item) =>
         item.id === id ? { id: id, title: title, date: date, color: color } : item,
       );
+
+      const docRef = doc(db, `users/${userId}/tasks`, id.toString());
+
       setItems((prevTodos) => {
         return {
           ...prevTodos,
           [container]: updateArray,
         };
+      });
+
+      await updateDoc(docRef, {
+        title: title,
+        date: date,
+        color: color,
       });
     },
     [items],
