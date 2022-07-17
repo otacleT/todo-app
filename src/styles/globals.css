@@ -26,3 +26,7 @@
 .mantine-ColorPicker-wrapper {
   width: 100%;
 }
+.icon > svg {
+  width: 20px;
+  height: 20px;
+}
