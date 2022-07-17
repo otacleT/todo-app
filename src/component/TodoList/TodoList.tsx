@@ -12,7 +12,7 @@ type Props = {
     date: Date | null;
     color: string;
   }[];
-  handleDelete: (id: UniqueIdentifier | undefined) => void;
+  handleDelete: (id: UniqueIdentifier) => void;
   handleUp: (
     id: UniqueIdentifier | undefined,
     title: string | undefined,
@@ -41,6 +41,7 @@ export const TodoList: FC<Props> = (props) => {
               color={item.color}
               handleDelete={handleDelete}
               handleUp={handleUp}
+              label={label}
             />
           ))}
         </div>

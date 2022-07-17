@@ -1,4 +1,5 @@
 import { UniqueIdentifier } from "@dnd-kit/core";
+import clsx from "clsx";
 import dayjs from "dayjs";
 import { CSSProperties, FC, useCallback, useEffect, useState } from "react";
 import { Frown, Meh, Smile } from "react-feather";
@@ -6,18 +7,19 @@ import { AiOutlineEdit } from "react-icons/ai";
 import { IoTrashOutline } from "react-icons/io5";
 
 type Props = {
-  id: UniqueIdentifier | undefined;
+  id: UniqueIdentifier;
   title: string | undefined;
   date: Date | null | undefined;
   color: string | undefined;
-  handleDelete: (id: UniqueIdentifier | undefined) => void;
+  handleDelete: (id: UniqueIdentifier) => void;
   setIsShow: React.Dispatch<React.SetStateAction<boolean>>;
+  label?: string;
 };
 
 /**@package */
 export const TodoBlock: FC<Props> = (props) => {
-  const { id, title, date, color, handleDelete, setIsShow } = props;
   const [deadline, setDeadline] = useState<string>("");
+  const { id, title, date, color, handleDelete, setIsShow, label } = props;
   const style: CSSProperties = {
     borderLeft: `5px solid ${color}`,
   };
@@ -49,6 +51,7 @@ export const TodoBlock: FC<Props> = (props) => {
   }, [date, deadline]);
 
   const handleIcon = useCallback((dl: string) => {
+    if (label == "done") return;
     switch (dl) {
       case "smile":
         return (
@@ -89,6 +92,7 @@ export const TodoBlock: FC<Props> = (props) => {
       className="relative text-md font-bold block text-left shadow-lg shadow-black/30 w-full py-3 px-4"
     >
       {title}
+      {label}
       <ul className="flex justify-between border-gray-500 border-t-2 mt-2 pt-2">
         <li className="text-sm font-bold text-gray text-gray-500 inline-block">
           {dayjs(date).format("YYYY-MM-DD")}
@@ -103,6 +107,17 @@ export const TodoBlock: FC<Props> = (props) => {
               <AiOutlineEdit />
             </button>
           </li>
+          {id && (
+            <li className="px-1">
+              <button
+                data-dndkit-disabled-dnd-flag="true"
+                className="text-lg"
+                onClick={() => handleDelete(id)}
+              >
+                <IoTrashOutline />
+              </button>
+            </li>
+          )}
           <li className="px-1">
             <button
               data-dndkit-disabled-dnd-flag="true"
