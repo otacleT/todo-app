@@ -2,22 +2,22 @@ import {
   getAuth,
   EmailAuthProvider,
   // FacebookAuthProvider,
-  // GoogleAuthProvider,
+  GoogleAuthProvider,
   // TwitterAuthProvider,
-} from 'firebase/auth';
-import { auth } from 'firebaseui';
-import { FunctionComponent } from 'react';
-import StyledFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth';
+} from "firebase/auth";
+import { auth } from "firebaseui";
+import { FunctionComponent } from "react";
+import StyledFirebaseAuth from "react-firebaseui/StyledFirebaseAuth";
 
 const uiConfig: auth.Config = {
-  signInFlow: 'popup',
+  signInFlow: "popup",
   signInOptions: [
     EmailAuthProvider.PROVIDER_ID,
     // FacebookAuthProvider.PROVIDER_ID,
-    // GoogleAuthProvider.PROVIDER_ID,
+    GoogleAuthProvider.PROVIDER_ID,
     // TwitterAuthProvider.PROVIDER_ID,
   ],
-  signInSuccessUrl: '/',
+  signInSuccessUrl: "/",
 };
 
 type Props = {
@@ -29,7 +29,7 @@ export const Signin: FunctionComponent<Props> = (props) => {
 
   return (
     <>
-      <div style={{ margin: '1rem' }}>
+      <div style={{ margin: "1rem" }}>
         <h1>サインイン</h1>
         {config && <StyledFirebaseAuth firebaseAuth={getAuth()} uiConfig={config} />}
       </div>
