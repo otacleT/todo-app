@@ -8,4 +8,4 @@ https://user-images.githubusercontent.com/80461281/179625595-c04760fd-7dd4-4c29-
 - Totoリストに登録したアイテムは、Googleカレンダーに「リマインダー」として追加され`Done`に移動するとカレンダーから削除
 
 ## 技術スタック
-<img src="https://user-images.githubusercontent.com/80461281/179625628-8938b622-cbe8-4adb-83af-af8b9d0cb06c.jpg" width="300px">
+<img src="https://user-images.githubusercontent.com/80461281/179687249-b9be1ade-7b13-42fe-8768-41ad034c6ff2.JPG" width="300px">
