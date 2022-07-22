@@ -13,7 +13,7 @@ import { FirebaseApp } from "../lib/Firebase";
 type UserState = User | null;
 
 const userState = atom<UserState>({
-  key: "userState",
+  key: String(Math.round(Math.random() * 1000000)),
   default: null,
   dangerouslyAllowMutability: true,
 });
