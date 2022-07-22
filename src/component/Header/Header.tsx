@@ -1,9 +1,9 @@
 import Image from "next/image";
 import Link from "next/link";
-import { FunctionComponent } from "react";
+import { FC } from "react";
 
 /**@package */
-export const Header: FunctionComponent = () => {
+export const Header: FC = () => {
   return (
     <header className="w-full shadow-md shadow-black/25">
       <div className="h-[70px] max-w-3xl px-3 mx-auto  flex justify-between items-center">
