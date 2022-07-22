@@ -1,1 +1,0 @@
-export { FirebaseTest } from './firebaseTest';

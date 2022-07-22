@@ -1,9 +1,7 @@
 import { UniqueIdentifier } from "@dnd-kit/core";
-import { getFirestore, doc, setDoc, Timestamp } from "firebase/firestore";
 import { ChangeEventHandler, FC, useCallback, useState } from "react";
 import { ColorPick } from "../ColorPick";
 import { DatePick } from "../DatePick";
-import { useAuthState } from "../Header/hooks/authentication";
 import { InputTitle } from "../InputTitle";
 
 type Props = {
@@ -22,27 +20,14 @@ type TodoInput = {
 /**@package */
 export const AddTodo: FC<TodoInput> = (props) => {
   const { setItems } = props;
-
-  const defaultTime = new Date();
   const [text, setText] = useState<string>("");
-  const [date, setDate] = useState<Date>(defaultTime);
+  const [date, setDate] = useState<Date | null>(null);
   const [color, setColor] = useState<string>("");
-  const { userId } = useAuthState();
 
   const handleInput: ChangeEventHandler<HTMLInputElement> = (e) => {
     setText(e.target.value);
   };
-  const handleAdd = useCallback(async () => {
-    const db = getFirestore();
-    const curretTaskId = Math.round(Math.random() * 10000000000);
-    const docRef = doc(db, `users/${userId}/tasks`, curretTaskId.toString());
-    const convertTimeStamp = Timestamp.fromDate(date);
-    await setDoc(docRef, {
-      title: text,
-      color: color,
-      status: "todo",
-      date: convertTimeStamp,
-    });
+  const handleAdd = useCallback(() => {
     setItems((prevItems) => {
       const { todo } = prevItems;
       const newItems = {
@@ -50,7 +35,7 @@ export const AddTodo: FC<TodoInput> = (props) => {
         todo: [
           ...todo,
           {
-            id: curretTaskId,
+            id: Math.round(Math.random() * 10000),
             title: text,
             date: date,
             color: color,
@@ -60,7 +45,7 @@ export const AddTodo: FC<TodoInput> = (props) => {
       return newItems;
     });
     setText("");
-    setDate(defaultTime);
+    setDate(null);
     setColor("");
   }, [text, date, color]);
 

@@ -89,7 +89,7 @@ export const TodoItem: FC<Props> = (props) => {
           label={label}
         />
       </div>
-      {isShow ? (
+      {isShow && (
         <UpdateTodo
           setIsShow={setIsShow}
           id={before.id}
@@ -101,7 +101,7 @@ export const TodoItem: FC<Props> = (props) => {
           handleDate={handleDate}
           handleColor={handleColor}
         />
-      ) : null}
+      )}
     </div>
   );
 };

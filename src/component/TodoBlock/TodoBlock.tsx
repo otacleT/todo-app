@@ -1,5 +1,4 @@
 import { UniqueIdentifier } from "@dnd-kit/core";
-import clsx from "clsx";
 import dayjs from "dayjs";
 import { CSSProperties, FC, useCallback, useEffect, useState } from "react";
 import { Frown, Meh, Smile } from "react-feather";
