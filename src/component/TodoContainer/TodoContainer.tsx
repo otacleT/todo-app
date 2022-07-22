@@ -12,7 +12,7 @@ import {
   DragEndEvent,
 } from "@dnd-kit/core";
 import { arrayMove, sortableKeyboardCoordinates } from "@dnd-kit/sortable";
-import React, { useState, useCallback, useEffect, FunctionComponent } from "react";
+import React, { useState, useCallback, FunctionComponent } from "react";
 import type { PointerEvent, KeyboardEvent } from "react";
 import { AddTodo } from "../Addtodo";
 import { TodoItem } from "../TodoItem";
@@ -52,7 +52,7 @@ export const TodoContainer: FunctionComponent = () => {
   });
 
   const handleDelete = useCallback(
-    async (id: UniqueIdentifier) => {
+    (id: UniqueIdentifier) => {
       const array = Object.keys(items);
       let container = "";
       for (const x of array) {
@@ -72,7 +72,7 @@ export const TodoContainer: FunctionComponent = () => {
     [items],
   );
   const handleUp = useCallback(
-    async (
+    (
       id: UniqueIdentifier | undefined,
       title: string | undefined,
       date: Date | null | undefined,
@@ -194,7 +194,7 @@ export const TodoContainer: FunctionComponent = () => {
     [items],
   );
   const handleDragEnd = useCallback(
-    async (event: DragEndEvent) => {
+    (event: DragEndEvent) => {
       const { active, over } = event;
       const { id } = active;
       if (!over) {
