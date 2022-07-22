@@ -1,5 +1,5 @@
-import type { NextPage } from 'next';
-import { TodoContainer } from 'src/component/TodoContainer';
+import type { NextPage } from "next";
+import { TodoContainer } from "src/component/TodoContainer";
 
 const Home: NextPage = () => {
   return (
