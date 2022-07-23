@@ -1,7 +1,8 @@
 import { UniqueIdentifier } from "@dnd-kit/core";
-import { doc, getFirestore, setDoc } from "firebase/firestore";
+import { doc, setDoc } from "firebase/firestore";
 import { ChangeEventHandler, FC, useCallback, useState } from "react";
-import { useAuth, useUser } from "src/hooks/useAuth";
+import { useUser } from "src/hooks/useAuth";
+import { db } from "src/lib/Firebase";
 import { ColorPick } from "../ColorPick";
 import { DatePick } from "../DatePick";
 import { InputTitle } from "../InputTitle";
@@ -31,7 +32,16 @@ export const AddTodo: FC<TodoInput> = (props) => {
     setText(e.target.value);
   };
   const handleAdd = useCallback(async () => {
-    // const addId = Math.round(Math.random() * 10000000000);
+    const addId = Math.round(Math.random() * 10000000000);
+    if (user) {
+      const docRef = doc(db, `users/${user.uid}/todos`, String(addId));
+      await setDoc(docRef, {
+        title: text,
+        color: color,
+        status: "todo",
+        date: date,
+      });
+    }
     setItems((prevItems) => {
       const { todo } = prevItems;
       const newItems = {
@@ -39,7 +49,7 @@ export const AddTodo: FC<TodoInput> = (props) => {
         todo: [
           ...todo,
           {
-            id: Math.round(Math.random() * 10000000000),
+            id: addId,
             title: text,
             date: date,
             color: color,
@@ -48,18 +58,10 @@ export const AddTodo: FC<TodoInput> = (props) => {
       };
       return newItems;
     });
-    // if (!user) return;
-    // const docRef = doc(db, `users/${user.uid}/tasks`, String(addId));
-    // await setDoc(docRef, {
-    //   title: text,
-    //   color: color,
-    //   status: "todo",
-    //   date: date,
-    // });
     setText("");
     setDate(null);
     setColor("");
-  }, [text, date, color]);
+  }, [text, date, color, user]);
 
   const handleColor = useCallback((e: string) => {
     setColor(e);
