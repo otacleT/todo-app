@@ -1,8 +1,8 @@
 import "../styles/globals.css";
 import type { AppProps } from "next/app";
 import Head from "next/head";
-import { Header } from "../component/Header";
 import { RecoilRoot } from "recoil";
+import { Header } from "../component/Header";
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
