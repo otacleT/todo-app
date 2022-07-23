@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { FC } from "react";
-import { Auth } from "../Auth";
+import { AddAuth } from "../AddAuth";
 
 /**@package */
 export const Header: FC = () => {
@@ -10,7 +10,7 @@ export const Header: FC = () => {
         <Link href="/">
           <a className="text-2xl font-bold">Todo App</a>
         </Link>
-        <Auth />
+        <AddAuth />
       </div>
     </header>
   );
