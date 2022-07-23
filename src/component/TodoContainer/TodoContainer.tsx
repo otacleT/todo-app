@@ -12,11 +12,15 @@ import {
   DragEndEvent,
 } from "@dnd-kit/core";
 import { arrayMove, sortableKeyboardCoordinates } from "@dnd-kit/sortable";
-import React, { useState, useCallback, FunctionComponent } from "react";
+import React, { useState, useCallback, FunctionComponent, useEffect } from "react";
 import type { PointerEvent, KeyboardEvent } from "react";
 import { AddTodo } from "../Addtodo";
 import { TodoItem } from "../TodoItem";
 import { TodoList } from "../TodoList";
+import { db } from "src/lib/Firebase";
+import { deleteDoc, doc, updateDoc } from "firebase/firestore";
+import { useUser } from "src/hooks/useAuth";
+import { useTodos } from "src/hooks/useTodos";
 
 type Props = {
   [key: string]: {
@@ -44,6 +48,8 @@ export type Update = {
 };
 
 export const TodoContainer: FunctionComponent = () => {
+  const user = useUser();
+  const { isLoading, todos, doings, dones } = useTodos();
   const [activeId, setActiveId] = useState<UniqueIdentifier | null>();
   const [items, setItems] = useState<Props>({
     todo: [],
@@ -51,8 +57,18 @@ export const TodoContainer: FunctionComponent = () => {
     done: [],
   });
 
+  useEffect(() => {
+    setItems((prevTodos) => {
+      return {
+        ...prevTodos,
+        todo: todos,
+        doing: doings,
+        done: dones,
+      };
+    });
+  }, [isLoading, todos, doings, dones]);
   const handleDelete = useCallback(
-    (id: UniqueIdentifier) => {
+    async (id: UniqueIdentifier) => {
       const array = Object.keys(items);
       let container = "";
       for (const x of array) {
@@ -68,11 +84,15 @@ export const TodoContainer: FunctionComponent = () => {
           [container]: deleteArray,
         };
       });
+      if (user) {
+        const docRef = doc(db, `users/${user.uid}/todos`, String(id));
+        await deleteDoc(docRef);
+      }
     },
     [items],
   );
   const handleUp = useCallback(
-    (
+    async (
       id: UniqueIdentifier | undefined,
       title: string | undefined,
       date: Date | null | undefined,
@@ -92,13 +112,20 @@ export const TodoContainer: FunctionComponent = () => {
       const updateArray = items[container].map((item) =>
         item.id === id ? { id: id, title: title, date: date, color: color } : item,
       );
-
       setItems((prevTodos) => {
         return {
           ...prevTodos,
           [container]: updateArray,
         };
       });
+      if (user) {
+        const docRef = doc(db, `users/${user.uid}/todos`, String(id));
+        await updateDoc(docRef, {
+          title: title,
+          date: date,
+          color: color,
+        });
+      }
     },
     [items],
   );
@@ -194,7 +221,7 @@ export const TodoContainer: FunctionComponent = () => {
     [items],
   );
   const handleDragEnd = useCallback(
-    (event: DragEndEvent) => {
+    async (event: DragEndEvent) => {
       const { active, over } = event;
       const { id } = active;
       if (!over) {
@@ -218,6 +245,12 @@ export const TodoContainer: FunctionComponent = () => {
         }));
       }
       setActiveId(null);
+      if (user) {
+        const docRef = doc(db, `users/${user.uid}/todos`, String(id));
+        await updateDoc(docRef, {
+          status: activeContainer.toString(),
+        });
+      }
     },
     [items, findContainer],
   );
@@ -264,6 +297,7 @@ export const TodoContainer: FunctionComponent = () => {
       coordinateGetter: sortableKeyboardCoordinates,
     }),
   );
+
   return (
     <div className="flex justify-between max-w-6xl mx-auto px-3 mt-10">
       <AddTodo setItems={setItems} />

@@ -6,9 +6,8 @@ type Props = {
   children: JSX.Element;
 };
 
-export const Auth: FC = () => {
+export const AddAuth: FC = () => {
   const user = useUser();
-
   const handleLogin = (): void => {
     login().catch((error) => console.error(error));
   };
@@ -22,7 +21,6 @@ export const Auth: FC = () => {
 
     return isLoading ? <p className="text-sm leading-none">Loading...</p> : children;
   };
-
   return (
     <div className="grid grid-rows-1 content-center justify-items-center w-[100px]">
       {user !== null && user.photoURL != null ? (
