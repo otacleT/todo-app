@@ -1,27 +1,22 @@
-import { UniqueIdentifier } from "@dnd-kit/core";
-import { collection, addDoc, setDoc, doc } from "firebase/firestore";
-import { db } from "./Firebase";
+import { collection, getDocs, getFirestore, doc, setDoc } from "firebase/firestore";
 
-export const addUser = async () => {
-  try {
-    const docRef = await addDoc(collection(db, "users"), {
-      first: "Ada",
-      last: "Lovelace",
-      born: 1815,
-    });
-    console.log("Document written with ID: ", docRef.id);
-  } catch (e) {
-    console.error("Error adding document: ", e);
-  }
+export type Todo = {
+  id: string;
+  title: string;
+  color: string;
+  date: Date;
+  status: string;
 };
-export const setUser = async (uid: UniqueIdentifier) => {
-  await setDoc(
-    doc(db, "users", String(uid)),
-    {
-      title: "勉強する",
-      date: "2022-07-23",
-      color: "#303030",
-    },
-    { merge: true },
-  );
-};
+
+export async function getAuthTodos(uid: string | undefined): Promise<Todo[]> {
+  const todos = new Array<Todo>();
+  const db = getFirestore();
+  const todosSnapshot = await getDocs(collection(db, `/users/${uid}/todos`));
+
+  todosSnapshot.forEach((doc) => {
+    const todo = doc.data() as Todo;
+    todos.push({ ...todo, id: doc.id });
+  });
+
+  return todos;
+}
