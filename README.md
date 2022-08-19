@@ -1,6 +1,8 @@
 # Todo App
 
-https://user-images.githubusercontent.com/80461281/179625595-c04760fd-7dd4-4c29-8378-ff19166532e3.mp4
+https://user-images.githubusercontent.com/80461281/185529344-cce662cb-521c-4ba9-b59f-a852138c01db.mp4
+
+## 先輩の背中ハッカソン（7/16~18）
 
 ## アイデア
 - 色を指定できることで視覚的にどれが重要なのかをユーザー側で選択可能
